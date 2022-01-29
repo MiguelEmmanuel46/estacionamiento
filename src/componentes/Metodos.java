@@ -169,4 +169,85 @@ public class Metodos
             JOptionPane.showMessageDialog(null, "Error formato de correo invalido");
         }
     }
+    
+    public void changePassword(String correouser, char[] passUser, char[] PassAdmin) {
+        String str = correouser;
+        String correouser2 = str.trim();
+        String originalPasswordAdmin = String.valueOf(PassAdmin);
+        String originalPasswordUser = String.valueOf(passUser);
+        Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+        Matcher mather = pattern.matcher(correouser2);
+        String generatedSecuredPasswordHash = null;
+        ResultSet rs1 = null;
+        ResultSet rs2 = null;
+        ResultSet rs3 = null;
+        String correoDB = "";
+        boolean matched = false;
+        boolean usuarioExistente = false;
+        String passRoot="";
+        
+        try {
+            PreparedStatement smt1 = Conexion.conectar().prepareStatement("SELECT pass from super_user");
+            rs1 = smt1.executeQuery();
+            while (rs1.next()) {
+                passRoot = rs1.getString("pass");
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error:" + e);
+        }
+        try {
+            matched = Password.validatePassword(originalPasswordAdmin, passRoot);
+        } catch (NoSuchAlgorithmException ex) {
+            JOptionPane.showMessageDialog(null, "Error:" + ex);
+        } catch (InvalidKeySpecException ex) {
+            JOptionPane.showMessageDialog(null, "Error:" + ex);
+        }
+        if (mather.find() == true) {
+            if (matched == true) {
+                try {
+                    generatedSecuredPasswordHash = Password.generateStorngPasswordHash(originalPasswordUser);
+                } catch (NoSuchAlgorithmException ex) {
+                    JOptionPane.showMessageDialog(null, "Error: " + ex);
+                } catch (InvalidKeySpecException ex) {
+                    JOptionPane.showMessageDialog(null, "Error: " + ex);
+                }
+
+                try {
+                    PreparedStatement smt22 = Conexion.conectar().prepareStatement("SELECT correo from usuarios WHERE correo='" + correouser2 + "'");
+                    rs2 = smt22.executeQuery();
+                    while (rs2.next()) {
+                        correoDB = rs2.getString("correo");
+                    }
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, "Error:" + e);
+                }
+
+                if (correoDB.equals(correouser2)) {
+                    usuarioExistente = true;
+                    System.out.println("Correo matched CorreoDB=" + correoDB + " " + " CorreoUSer=" + correouser2);
+                } else {
+                    usuarioExistente = false;
+                    System.out.println("Cooreo no matched CorreoDB=" + correoDB + " " + " CorreoUSer=" + correouser2);
+                    JOptionPane.showMessageDialog(null, "Correo no registrado");
+                }
+
+                if (usuarioExistente == true) {
+                    try {
+                        PreparedStatement smt33 = Conexion.conectar().prepareStatement("UPDATE usuarios set password='" + generatedSecuredPasswordHash + "' WHERE correo='" + correouser2 + "'");
+
+                        if (smt33.executeUpdate() == 1) {
+                            JOptionPane.showMessageDialog(null, "Password actualizada con exito!");
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Hubo un error al actualizar el password!.");
+                        }
+                    } catch (SQLException e) {
+                        JOptionPane.showMessageDialog(null, "Error:" + e);
+                    }
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Password root incorrecta");
+            }
+        }
+    }
+    
 }
