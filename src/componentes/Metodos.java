@@ -3,13 +3,13 @@ package componentes;
 import javax.swing.table.DefaultTableModel;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.DateFormat;
 //import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Vector;
@@ -47,7 +47,7 @@ public class Metodos
         try {
             rs2 = stmt2.executeQuery();
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Error:" + ex);
+            JOptionPane.showMessageDialog(null, "Errorseleccionar correo passwords:" + ex);
         }
         try {
             while (rs2.next()) {
