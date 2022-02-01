@@ -217,6 +217,7 @@ Metodos o = new Metodos();
             f.setVisible(true);
             this.hide();
             this.dispose();
+            Metodos.correoEmpleado=correoU.getText();
         }
 
 

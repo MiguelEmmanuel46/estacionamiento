@@ -2,7 +2,6 @@ package componentes;
 
 import br.com.adilson.util.Extenso;
 import br.com.adilson.util.PrinterMatrix;
-import static com.sun.org.apache.xalan.internal.lib.ExsltDynamic.map;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import javax.swing.table.DefaultTableModel;
@@ -13,13 +12,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.DateFormat;
+import java.text.ParseException;
 //import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Vector;
 import javax.print.Doc;
@@ -31,8 +30,6 @@ import javax.print.SimpleDoc;
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
 import javax.swing.JOptionPane;
-import static jdk.nashorn.internal.objects.NativeArray.map;
-import static jdk.nashorn.internal.objects.NativeDebug.map;
 
 public class Metodos 
 {
@@ -44,6 +41,7 @@ public class Metodos
     public static String fileNameToBase;
     public static String consultaFiltrarToExcel;
     public static String[] vect2;
+    public static String correoEmpleado="";
     
         public boolean login() throws SQLException {
         boolean matched2 = false;
@@ -506,9 +504,126 @@ public class Metodos
          
     }
     
-    public void setComboBox(){
+    public int obtenerId(String placas){
+    int id_mov =0;
+        PreparedStatement stmnt = null;
+        ResultSet rs = null;
+        try {
+            stmnt = Conexion.conectar().prepareStatement("SELECT id_movimiento from movimientos WHERE placas='"+placas+"' AND hora_salida IS NULL");
+            rs = stmnt.executeQuery();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error:" + ex);
+        }
+        try {
+            while (rs.next()) {
+                id_mov = rs.getInt("id_movimiento");
 
-
+            }
+        } catch (SQLException ex) {
+        }
+        Conexion.cierraConexion();
+        
+    
+    return id_mov;
     }
     
+    
+    public String obtenerHoraEntrada(int id_movimiento) {
+        String hora_entrada="";
+        PreparedStatement stmnt = null;
+        ResultSet rs = null;
+        try {
+            stmnt = Conexion.conectar().prepareStatement("SELECT CONCAT(fecha,' ',hora_entrada) as fecha from movimientos WHERE id_movimiento=" + id_movimiento);
+            rs = stmnt.executeQuery();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error:" + ex);
+        }
+        try {
+            while (rs.next()) {
+                hora_entrada = rs.getString("fecha");
+
+            }
+        } catch (SQLException ex) {
+        }
+        Conexion.cierraConexion();
+
+        return hora_entrada;
+    }
+    
+    public double getVehicleType(int idTarifa){
+        PreparedStatement stmnt = null;
+        ResultSet rs = null;
+
+        double tarifa = 0;
+        try {
+            stmnt = Conexion.conectar().prepareStatement("SELECT tarifa from tarifas WHERE id_tarifa="+idTarifa+" ORDER BY id_tarifa");
+            rs = stmnt.executeQuery();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error:" + ex);
+        }
+        try {
+            while (rs.next()) {
+                tarifa= rs.getDouble("tarifa");
+
+            }
+        } catch (SQLException ex) {
+        }
+        Conexion.cierraConexion();
+        return tarifa;
+
+    }
+
+    public void saveMovimientos(String fecha,String hora_entrada, int id_tarifa,String placa,String correo){
+        
+        try {
+            PreparedStatement stmt = Conexion.conectar().prepareStatement("INSERT INTO movimientos(id_movimiento,fecha,hora_entrada,id_tarifa,placas,correo) values(0,'"+fecha+"','"+hora_entrada+"',"+id_tarifa+",'"+placa.trim()+"','"+correo+"')");
+            stmt.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Informacion ingresada a la base de datos correctamente");
+
+        } catch (SQLException ex) {
+            //Logger.getLogger(GuardarDatos2.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, ex);
+        }
+        Conexion.cierraConexion();
+    }  
+    
+    public Vector calculateTime(String entrada,String salida) {
+        long between ;
+        long day1 = 0 ;
+        long hour1 = 0 ;
+        long minute1 = 0 ;
+        long second1 = 0 ;
+            Vector v=new Vector();
+
+        SimpleDateFormat dfs = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try{java.util.Date begin = dfs.parse(entrada);
+        java.util.Date end = dfs.parse(salida);
+        between = (end.getTime() - begin.getTime()) / 1000; // División por 1000 es convertir a segundos
+        day1 = between / (24 * 3600);
+        hour1 = between % (24 * 3600) / 3600;
+        minute1 = between % 3600 / 60;
+        second1 = between % 60 / 60;
+        System.out.println("" + day1 + "dias  " + hour1 +  " hora " + minute1 + " minuto " + second1 + " segundo ");
+        }catch(ParseException ex){}        
+        v.add(day1);
+        v.add(hour1);
+        v.add(minute1);
+        v.add(second1);
+        return v;
+    }
+    
+    
+    public void updateMovimientos(String fecha,String placa,String hora_salida ,String tiempo,Double dinero_generado){
+        
+        try {
+            PreparedStatement stmt = Conexion.conectar().prepareStatement("UPDATE movimientos set hora_salida='"+hora_salida+"',tiempo='"+tiempo+"',dinero_generado="+dinero_generado+" WHERE placas='"+placa+"' AND fecha='"+fecha+"'");
+            stmt.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Salida registrada correctamente");
+
+        } catch (SQLException ex) {
+            //Logger.getLogger(GuardarDatos2.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, ex);
+        }
+        Conexion.cierraConexion();
+    }  
 }
