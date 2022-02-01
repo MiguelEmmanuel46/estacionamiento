@@ -68,6 +68,7 @@ Metodos o = new Metodos();
         passwordU.setBackground(new java.awt.Color(226, 29, 134));
         passwordU.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         passwordU.setForeground(new java.awt.Color(228, 241, 254));
+        passwordU.setText("111");
 
         jButton1.setBackground(new java.awt.Color(34, 167, 240));
         jButton1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N

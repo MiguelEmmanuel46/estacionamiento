@@ -6,9 +6,12 @@
 package componentes;
 
 
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 
@@ -18,10 +21,12 @@ import javax.swing.JOptionPane;
  * @author soporte
  */
 public class Conexion {
+    public static Connection con = null;
+    
     public static Connection conectar() {
-        Connection con = null;
+        
         try {
-            String url = "jdbc:mysql://localhost:3306/estacionamiento?user=root&password=afb1f1ac34f!W";
+            String url = "jdbc:mysql://localhost:3306/estacionamiento?user=userE&password=afb1f1ac34f!W";
             con = (Connection) DriverManager.getConnection(url);
             if (con != null) {
                 System.out.println("Conexion Satisfactoria");
@@ -30,5 +35,13 @@ public class Conexion {
             JOptionPane.showMessageDialog(null, "Conexion con el servidor falló" + e.getMessage());
         }
         return con;
+    }
+    
+    public static void cierraConexion() {
+        try {
+            con.close();
+        } catch (SQLException sqle) {
+            JOptionPane.showMessageDialog(null, "Error al cerrar conexion", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 }
