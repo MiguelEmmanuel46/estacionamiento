@@ -218,7 +218,8 @@ int id_tarifaDB =0;
         //id_tarifa
         //dinero_generado
        //metodos.saveMovimientos(fechaF,hora_entrada,id_tarifaDB,placa,correo);
-        metodos.imprimirTicket(placa,tarifa,hora_entrada,fechaF,correo);
+        
+        metodos.generarTicket(correo,fechaF,hora_entrada,id_tarifaDB,placa);
         
         
        
