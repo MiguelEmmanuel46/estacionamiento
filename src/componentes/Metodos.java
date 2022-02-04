@@ -2,8 +2,15 @@ package componentes;
 
 import br.com.adilson.util.Extenso;
 import br.com.adilson.util.PrinterMatrix;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import javax.swing.table.DefaultTableModel;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
@@ -353,9 +360,28 @@ public class Metodos
     }
     
     
-    public void imprimirTicket(String subTotal, String total, String dineroR, String devolucion){
+    public void generarPDF(String pathImagen){
+       
+    }
+    
+    public void genPDF(){
+    PDFGenerador bar = new PDFGenerador();
+        File imagen = bar.generarPDF("34198987");
+        PDFGenerador.generarPDF(imagen.getAbsolutePath());
+        /*
+        MiBarco bar = new MiBarco();
+        File imagen = bar.getBarcode("34198987");
+        pdfGenerador.generarPDF(imagen.getAbsolutePath());
+        */
+    }
+}
+
+    }
+    
+    
+    public void imprimirTicket(String placa, Double tarifa, String hora_entrada, String fecha, String correo){
         try {
-            String placa="TUE4032";
+            
             Long datetime = System.currentTimeMillis();
             Timestamp timestamp = new Timestamp(datetime);
 
@@ -377,12 +403,12 @@ public class Metodos
             printer.printTextWrap(6, 1, 10, 41, ""); //Aqui va la fecha de recibo
             printer.printTextWrap(6, 1, 38, 80, ""); //Aqui va la hora de recibo
             //printer.printTextWrap(7, 1, 3, 80, "Numero"); //Numero del recibo - FACTURA O PEDIDO
-            printer.printTextWrap(7, 1, 20, 80, "Atendio: Miguel Emmanuel Montiel Martinez"); //Nombre Cajero
+            printer.printTextWrap(7, 1, 20, 80, "Atendio: "+correo); //Nombre Cajero
             printer.printTextWrap(8, 1, 3, 80, "");//Nombre del Cliente
             printer.printTextWrap(9,1, 5, 80, "——————————–——————————–——————————–——————————–——–———–——–—–———–——–———");
             printer.printTextWrap(10,1, 36, 80, placa);
-            printer.printTextWrap(11,1, 34, 80, " 2022-31-01");
-            printer.printTextWrap(12,1, 35, 80, " 12:05:00");
+            printer.printTextWrap(11,1, 34, 80, fecha);
+            printer.printTextWrap(12,1, 35, 80, hora_entrada);
             printer.printTextWrap(13,1, 20, 80, " Tarifa por hora o fraccion, sin tolerancia: $15 ");
             printer.printTextWrap(14,1, 26, 80, " Costo por boleto perdido $100 ");
             
@@ -443,10 +469,11 @@ public class Metodos
             
             ///CREAR ARCHIVO EN CARPETA DEL PROYECTO PARA PEDIDOS
             printer.toFile("C:\\tmp\\"+result+"impresion.txt");
+            printer.toPrinter(result);
             FileInputStream inputStream = null;
 
             try {
-                inputStream = new FileInputStream("C:\\tmp\\impresion.txt");
+                inputStream = new FileInputStream("C:\\tmp\\"+result+"impresion.txt");
             } catch (FileNotFoundException ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(null, "Error al guardar");
@@ -464,6 +491,8 @@ public class Metodos
                 DocPrintJob printJob = defaultPrintService.createPrintJob();
                 try {
                     printJob.print(document, attributeSet);
+                    System.out.println("imprimiernsoooooooooooooooooooooooooooooooooooooooo");
+                    System.out.println(document);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
