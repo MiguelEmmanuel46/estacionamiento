@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import javax.swing.JOptionPane;
 //import Vistas.GuardarDatos2;
 import java.awt.Color;
+import java.awt.Toolkit;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.util.logging.Level;
@@ -30,7 +31,15 @@ Metodos metodos = new Metodos();
 
     public Panel() {
         initComponents();
-        
+        this.setResizable(false);
+
+        //AHORA LA CENTRARÉ EN LA PANTALLA
+        Dimension pantalla, cuadro;
+        pantalla = Toolkit.getDefaultToolkit().getScreenSize();
+        cuadro = this.getSize();
+
+        this.setLocation(((pantalla.width - cuadro.width) / 2),
+                (pantalla.height - cuadro.height) / 2);
       /*  labelUsuario.setText(usuarioTS);
         panelMavs.setBackgroung("Multimedia/fondoD.png");
         panelMavs.setLayout(null);

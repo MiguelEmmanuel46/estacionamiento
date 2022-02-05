@@ -6,11 +6,14 @@
 package vistas;
 
 import componentes.Metodos;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.Vector;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -46,6 +49,17 @@ int id_tarifaDB =0;
         };
         Thread hilo = new Thread(runnable);
         hilo.start();
+        
+        //NO PERMITO QUE PUEDAN CAMBIAR EL TAMAÑO DE LA VENTANA
+        this.setResizable(false);
+
+        //AHORA LA CENTRARÉ EN LA PANTALLA
+        Dimension pantalla, cuadro;
+        pantalla = Toolkit.getDefaultToolkit().getScreenSize();
+        cuadro = this.getSize();
+
+        this.setLocation(((pantalla.width - cuadro.width) / 2),
+                (pantalla.height - cuadro.height) / 2);
     }
 
     /**
@@ -205,7 +219,7 @@ int id_tarifaDB =0;
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         String hora_entrada = labelVEReloj.getText();
-        String placa = txtPlaca.getText();
+        String placa = txtPlaca.getText().toUpperCase();
         int tipoAuto = vESListaVehiculo.getSelectedIndex()+1;
         Double tarifa = Double.parseDouble(txtTarifa.getText());
         String correo = Metodos.correoEmpleado;
@@ -217,9 +231,23 @@ int id_tarifaDB =0;
         //tiempo
         //id_tarifa
         //dinero_generado
-       //metodos.saveMovimientos(fechaF,hora_entrada,id_tarifaDB,placa,correo);
+       //
         
+        
+       int checkEnrollment = 0;
+       checkEnrollment = metodos.obtenerId(placa);
+        if (checkEnrollment == 0) {
+        metodos.saveMovimientos(fechaF,hora_entrada,id_tarifaDB,placa,correo); 
         metodos.generarTicket(correo,fechaF,hora_entrada,id_tarifaDB,placa);
+            txtPlaca.setText("");
+        }else{
+        //JOptionPane.showMessageDialog(null,"El dato ya esta registrado en la base de datos y no ha registrado salida");
+        JOptionPane.showMessageDialog(null,"El dato ya esta registrado en la base de datos y no ha registrado salida");
+        txtPlaca.setText("");
+        }
+        
+        
+        //metodos.generarTicket(correo,fechaF,hora_entrada,id_tarifaDB,placa);
         
         
        
@@ -235,22 +263,14 @@ int id_tarifaDB =0;
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        LocalDate todaysDate = LocalDate.now();
-        String fechaF = todaysDate.toString();
-        String horaF = labelVEReloj.getText();
-        String fechafinal = fechaF+" "+horaF;
-        System.out.println("Fecha hoy"+fechafinal+"\n");
-        String placas = txtPlacaSalida.getText();
-        System.out.println("placas"+placas+"\n");
-        int id_movimiento = metodos.obtenerId(placas);
-        System.out.println("id movimiento"+id_movimiento+"\n");
-        String fechaEntrada = metodos.obtenerHoraEntrada(id_movimiento);
-        System.out.println("fecha en que entro"+fechaEntrada+"\n");
-        Vector nvec = new Vector();
-        nvec = metodos.calculateTime(fechaEntrada,fechafinal);
-        for (int i = 0; i < nvec.size(); i++) {
+           String horaF = labelVEReloj.getText();
+           String placas = txtPlacaSalida.getText();
+           metodos.calculateRateToPay(horaF,placas);
+           txtPlacaSalida.setText("");
+        /*for (int i = 0; i < nvec.size(); i++) {
             System.out.println(nvec.elementAt(i)+"\n");
-        }
+        }*/
+        
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**

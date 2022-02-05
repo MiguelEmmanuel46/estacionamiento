@@ -7,6 +7,8 @@ package vistas;
 
 import javax.swing.JFrame;
 import componentes.Metodos;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 
 /**
  *
@@ -20,6 +22,15 @@ Metodos im = new Metodos();
     public Register() {
         initComponents();
         setTitle("Registro");
+        this.setResizable(false);
+
+        //AHORA LA CENTRARÉ EN LA PANTALLA
+        Dimension pantalla, cuadro;
+        pantalla = Toolkit.getDefaultToolkit().getScreenSize();
+        cuadro = this.getSize();
+
+        this.setLocation(((pantalla.width - cuadro.width) / 2),
+                (pantalla.height - cuadro.height) / 2);
     }
 
     /**

@@ -43,6 +43,15 @@ import javax.print.SimpleDoc;
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
 import javax.swing.JOptionPane;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.time.LocalDate;
+import javax.print.PrintException;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.printing.PDFPageable;
 
 public class Metodos 
 {
@@ -320,7 +329,7 @@ public class Metodos
         try {
             while (rs.next()) {
                 id_mov = rs.getInt("id_movimiento");
-
+                //System.out.println("IDMOVIMIRNETO REGIS "+id_mov);
             }
         } catch (SQLException ex) {
         }
@@ -406,13 +415,127 @@ public class Metodos
         hour1 = between % (24 * 3600) / 3600;
         minute1 = between % 3600 / 60;
         second1 = between % 60 / 60;
-        System.out.println("" + day1 + "dias  " + hour1 +  " hora " + minute1 + " minuto " + second1 + " segundo ");
+        //System.out.println("" + day1 + "dias  " + hour1 +  " hora " + minute1 + " minuto " + second1 + " segundo ");
         }catch(ParseException ex){}        
         v.add(day1);
         v.add(hour1);
         v.add(minute1);
         v.add(second1);
         return v;
+    }
+    
+    public Double getRateByIdMov(int id_movimiento){
+        //select movimientos.id_movimiento,tarifas.tarifa FROM movimientos NATURAL JOIN tarifas WHERE movimientos.id_movimiento=3 AND movimientos.id_tarifa=tarifas.id_tarifa;
+        PreparedStatement stmnt = null;
+        ResultSet rs = null;
+
+        double tarifa = 0;
+        try {
+            stmnt = Conexion.conectar().prepareStatement("select tarifas.tarifa as tarifa FROM movimientos NATURAL JOIN tarifas WHERE movimientos.id_movimiento="+id_movimiento+" AND movimientos.id_tarifa=tarifas.id_tarifa");
+            rs = stmnt.executeQuery();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error:" + ex);
+        }
+        try {
+            while (rs.next()) {
+                tarifa = rs.getDouble("tarifa");
+
+            }
+        } catch (SQLException ex) {
+        }
+        Conexion.cierraConexion();
+        return tarifa;
+    }
+    
+    public Double changeRateByDays(String placas){
+        //select * from tarifas WHERE id_tarifa
+          int id_movimiento = obtenerId(placas);
+           int  id_tarifa;
+        String tipo_vehiculo = null;
+        String tipo_tarifa;
+        Double tarifa = null;
+        PreparedStatement stmnt = null,stmnt2=null;
+        ResultSet rs = null,rs2=null;
+
+        //double tarifa = 0;
+        try {
+            //stmnt = Conexion.conectar().prepareStatement("SELECT tarifas.id_tarifa,tarifas.tipo_vehiculo,tarifas.tipo_tarifa,tarifas.tarifa FROM movimientos NATURAL JOIN tarifas WHERE movimientos.id_movimiento="+id_movimiento+" AND movimientos.id_tarifa=tarifas.id_tarifa");
+            stmnt = Conexion.conectar().prepareStatement("SELECT tarifas.tipo_vehiculo FROM movimientos NATURAL JOIN tarifas WHERE movimientos.id_movimiento="+id_movimiento+" AND movimientos.id_tarifa=tarifas.id_tarifa");
+            rs = stmnt.executeQuery();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error:" + ex);
+        }
+        try {
+            while (rs.next()) {
+                //id_tarifa = rs.getInt("id_tarifa");
+                tipo_vehiculo = rs.getString("tipo_vehiculo");
+                //tipo_tarifa = rs.getString("tipo_tarifa");
+                //tarifa = rs.getDouble("tarifa");
+
+            }
+        } catch (SQLException ex) {
+        }
+       
+        
+        try {
+            stmnt2 = Conexion.conectar().prepareStatement("select tarifa from tarifas WHERE tipo_vehiculo='"+tipo_vehiculo+"' AND tipo_tarifa='Dia'");
+            rs2 = stmnt2.executeQuery();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error:" + ex);
+        }
+        try {
+            while (rs2.next()) {
+                //id_tarifa = rs.getInt("id_tarifa");
+                //tipo_vehiculo = rs.getString("tipo_vehiculo");
+                //tipo_tarifa = rs.getString("tipo_tarifa");
+                tarifa = rs2.getDouble("tarifa");
+
+            }
+        } catch (SQLException ex) {
+        }
+        Conexion.cierraConexion();
+        return tarifa;
+    }
+    
+    public void calculateRateToPay(String horaF,String placas){
+        LocalDate todaysDate = LocalDate.now();
+        String fechaF = todaysDate.toString();
+        //String horaF = labelVEReloj.getText();
+        String fechafinal = fechaF + " " + horaF;
+        // String placas = txtPlacaSalida.getText();
+        int id_movimiento = obtenerId(placas);
+        String fechaEntrada = obtenerHoraEntrada(id_movimiento);
+        Vector nvec = new Vector();
+        nvec = calculateTime(fechaEntrada, fechafinal);
+        String dia = nvec.elementAt(0).toString();
+        int dias = Integer.valueOf(dia);
+        String hora = nvec.elementAt(1).toString();
+        int horas = Integer.valueOf(hora);
+        String minuto = nvec.elementAt(2).toString();
+        int minutos = Integer.valueOf(minuto);
+        Double tarifaACobrar = getRateByIdMov(id_movimiento);
+        Double tarifaACobrarXDIA = 0.0;
+        Double tpd = 0.0;
+        Double tph = 0.0;
+        Double tpm = 0.0;
+        Double tarifaFinal = 0.0;
+        if (dias >= 1) {
+            tarifaACobrarXDIA = changeRateByDays(placas);
+            tpd = dias * tarifaACobrarXDIA;
+            System.out.println("dias: "+dias+" x "+tarifaACobrarXDIA+"= "+tpd+"\n");
+        }else{tpd=0.0;}
+        if (horas >= 1) {
+            tph = horas * tarifaACobrar;
+            System.out.println("horas: "+horas+" x "+tarifaACobrar+"= "+tph+"\n");
+        }else{tph =0.0;}
+        if (minutos >= 5 && minutos <=60) {
+            tpm = 1 * tarifaACobrar;
+            System.out.println("mins: "+minutos+" x "+tarifaACobrar+"= "+tpm+"\n");
+        }else{tpm=0.0;}
+        
+        tarifaFinal=tpd+tph+tpm;
+        System.out.println("Total a pagar: $"+tarifaFinal );
+        System.out.println("dia: "+dia+" hora: "+hora+" minuto: "+minuto);
     }
     
     
@@ -429,7 +552,46 @@ public class Metodos
         }
         Conexion.cierraConexion();
     }  
+    
+    public void imprimirTicket(String nombreArchivo){
+        try {
+            PDDocument document = PDDocument.load(new File("C:\\tmp\\"+nombreArchivo+"ticket.pdf"));
+            
+            PrinterJob job = PrinterJob.getPrinterJob();
+            
+            System.out.println("jj");
+            if (job.printDialog() == true) {
+                job.setPageable(new PDFPageable(document));
+                
+                //LOGGER.log(Level.INFO, "Imprimiendo documento");
+                System.out.println("imprimiendo");
+                try {
+                    job.print();
+                } catch (PrinterException ex) {
+                    Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+            }else{JOptionPane.showMessageDialog(null, "no se encontro archivo");}
+            document.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
+    /*public boolean checkEnrollment(String placa)
+    {
+        boolean isRegistered = false;
+        PreparedStatement stmnt = null;
+        ResultSet res = null;
+        try{
+            stmnt = Conexion.conectar().prepareStatement("");
+        }catch(){
+        
+        }
+        
+    return isRegistered;
+    }*/
+    
     public void generarTicket(String employeeName,String fecha,String hora_entrada,int id_tarifaDB,String placa){
         
         Double tarifa = getVehicleType(id_tarifaDB);
@@ -506,9 +668,11 @@ public class Metodos
             Logger.getLogger(Barras.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        saveMovimientos(fecha, hora_entrada, id_tarifaDB, placa, employeeName);
+        //saveMovimientos(fecha, hora_entrada, id_tarifaDB, placa, employeeName);
+        //unComentLineToPrintimprimirTicket(result2);
         
         
     }
 
+   
 }

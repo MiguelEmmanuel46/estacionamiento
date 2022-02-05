@@ -11,6 +11,8 @@ import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import componentes.Metodos;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 
 /**
  *
@@ -23,6 +25,15 @@ Metodos o = new Metodos();
      */
     public Login() {
         initComponents();
+        this.setResizable(false);
+
+        //AHORA LA CENTRARÉ EN LA PANTALLA
+        Dimension pantalla, cuadro;
+        pantalla = Toolkit.getDefaultToolkit().getScreenSize();
+        cuadro = this.getSize();
+
+        this.setLocation(((pantalla.width - cuadro.width) / 2),
+                (pantalla.height - cuadro.height) / 2);
     }
 
     /**

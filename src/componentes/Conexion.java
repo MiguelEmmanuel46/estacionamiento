@@ -29,7 +29,7 @@ public class Conexion {
             String url = "jdbc:mysql://localhost:3306/estacionamiento?user=userE&password=afb1f1ac34f!W";
             con = (Connection) DriverManager.getConnection(url);
             if (con != null) {
-                System.out.println("Conexion Satisfactoria");
+                
             }
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Conexion con el servidor falló" + e.getMessage());
@@ -40,6 +40,7 @@ public class Conexion {
     public static void cierraConexion() {
         try {
             con.close();
+            
         } catch (SQLException sqle) {
             JOptionPane.showMessageDialog(null, "Error al cerrar conexion", "Error", JOptionPane.ERROR_MESSAGE);
         }
