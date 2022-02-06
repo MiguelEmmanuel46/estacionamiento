@@ -228,7 +228,12 @@ Metodos o = new Metodos();
             f.setVisible(true);
             this.hide();
             this.dispose();
+            String corroep = correoU.getText();
             Metodos.correoEmpleado=correoU.getText();
+            Metodos.nombreEmpleado=o.getNameUser(corroep);
+            Metodos.tipoEmpleado=o.getTypeUser(corroep);
+            
+                    
         }
 
 

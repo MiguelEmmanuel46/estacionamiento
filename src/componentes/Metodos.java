@@ -49,6 +49,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import javax.print.PrintException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.printing.PDFPageable;
@@ -64,6 +66,8 @@ public class Metodos
     public static String consultaFiltrarToExcel;
     public static String[] vect2;
     public static String correoEmpleado="";
+    public static String nombreEmpleado="";
+    public static String tipoEmpleado="";
     
         public boolean login() throws SQLException {
         boolean matched2 = false;
@@ -497,7 +501,43 @@ public class Metodos
         return tarifa;
     }
     
-    public void calculateRateToPay(String horaF,String placas){
+    public boolean checkEnrollmentIsNull(String placas){
+    boolean checkEnrollment = false;
+    int cantidad=0;
+    //
+        PreparedStatement stmnt = null;
+        ResultSet rs = null;
+
+        //double tarifa = 0;
+        try {
+            
+            stmnt = Conexion.conectar().prepareStatement("SELECT count(id_movimiento) as ckecked FROM movimientos WHERE placas='"+placas+"' AND hora_salida IS NULL");
+            rs = stmnt.executeQuery();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error:" + ex);
+        }
+        try {
+            while (rs.next()) {
+                //id_tarifa = rs.getInt("id_tarifa");
+                cantidad = rs.getInt("ckecked");
+                //tipo_tarifa = rs.getString("tipo_tarifa");
+                //tarifa = rs.getDouble("tarifa");
+
+            }
+        } catch (SQLException ex) {
+        }
+        if (cantidad==0) {
+            checkEnrollment = false;
+        }else{
+        checkEnrollment=true;
+        }
+    return checkEnrollment;
+    }
+    
+    public String[] calculateRateToPay(String horaF,String placas){
+         
+         String[] mensajes = new String[5];
+          String msg1 = "",msg2 = "",msg3 = "",msg4;
         LocalDate todaysDate = LocalDate.now();
         String fechaF = todaysDate.toString();
         //String horaF = labelVEReloj.getText();
@@ -522,20 +562,29 @@ public class Metodos
         if (dias >= 1) {
             tarifaACobrarXDIA = changeRateByDays(placas);
             tpd = dias * tarifaACobrarXDIA;
-            System.out.println("dias: "+dias+" x "+tarifaACobrarXDIA+"= "+tpd+"\n");
+             msg1 = "dias: "+dias+" x "+tarifaACobrarXDIA+"= "+tpd+"\n";
         }else{tpd=0.0;}
         if (horas >= 1) {
             tph = horas * tarifaACobrar;
-            System.out.println("horas: "+horas+" x "+tarifaACobrar+"= "+tph+"\n");
+            msg2 = "horas: "+horas+" x "+tarifaACobrar+"= "+tph+"\n";
         }else{tph =0.0;}
         if (minutos >= 5 && minutos <=60) {
             tpm = 1 * tarifaACobrar;
-            System.out.println("mins: "+minutos+" x "+tarifaACobrar+"= "+tpm+"\n");
+            msg3 = "mins: "+minutos+" x "+tarifaACobrar+"= "+tpm+"\n";
         }else{tpm=0.0;}
         
         tarifaFinal=tpd+tph+tpm;
-        System.out.println("Total a pagar: $"+tarifaFinal );
-        System.out.println("dia: "+dia+" hora: "+hora+" minuto: "+minuto);
+            msg4 = "\nTotal a pagar: $"+tarifaFinal ;
+        String tiempo = "dia: "+dia+" hora: "+hora+" minuto: "+minuto;
+        mensajes[0] = msg1;
+        mensajes[1] = msg2;
+        mensajes[2] = msg3;
+        mensajes[3] = tiempo;
+        mensajes[4] = msg4;
+        
+        updateMovimientos(fechaF,placas,horaF,tiempo,tarifaFinal);
+        
+        return mensajes;
     }
     
     
@@ -559,12 +608,12 @@ public class Metodos
             
             PrinterJob job = PrinterJob.getPrinterJob();
             
-            System.out.println("jj");
+            //System.out.println("jj");
             if (job.printDialog() == true) {
                 job.setPageable(new PDFPageable(document));
                 
                 //LOGGER.log(Level.INFO, "Imprimiendo documento");
-                System.out.println("imprimiendo");
+                //System.out.println("imprimiendo");
                 try {
                     job.print();
                 } catch (PrinterException ex) {
@@ -577,21 +626,7 @@ public class Metodos
             Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
-    /*public boolean checkEnrollment(String placa)
-    {
-        boolean isRegistered = false;
-        PreparedStatement stmnt = null;
-        ResultSet res = null;
-        try{
-            stmnt = Conexion.conectar().prepareStatement("");
-        }catch(){
-        
-        }
-        
-    return isRegistered;
-    }*/
-    
+   
     public void generarTicket(String employeeName,String fecha,String hora_entrada,int id_tarifaDB,String placa){
         
         Double tarifa = getVehicleType(id_tarifaDB);
@@ -673,6 +708,138 @@ public class Metodos
         
         
     }
+    
+    public String getHourT(){
+        Calendar calendario = new GregorianCalendar();     
+        int hora, minutos, segundos;
+        hora =calendario.get(Calendar.HOUR_OF_DAY);
+        minutos = calendario.get(Calendar.MINUTE);
+        segundos = calendario.get(Calendar.SECOND);
+        String horaCompleta = hora + ":" + minutos + ":" + segundos;
+        return horaCompleta;
+    }
+    
+    public String getDateT(){
+        LocalDate todaysDate = LocalDate.now();        
+        String fechaF = todaysDate.toString();
+        return fechaF;
+    }
+    
+    public void insertCaja(String fecha,String hora,double monto_inicial){
+        //String fecha,String hora,double monto_inicial,double monto_final
+        //insertCaja(fecha,hora,monto_inicial,monto_final)
+        //double monto_inicial,monto_final;
+        PreparedStatement stmnt = null,stmnt2 = null;
+        ResultSet rs=null;
+        int num_registros = 0 ;
+        try {
+            stmnt2 = Conexion.conectar().prepareStatement("select count(id) as num_registros from caja WHERE fecha='"+fecha+"'");
+            rs = stmnt2.executeQuery();
+            while (rs.next()) {
+                num_registros = rs.getInt("num_registros");
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error:" + e);
+        }
+        if (num_registros == 0) {
+            try {
+                stmnt = Conexion.conectar().prepareStatement("INSERT INTO caja values(0,'" + fecha + "','" + hora + "'," + monto_inicial + ",0)");
+                stmnt.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Usted establecio $" + monto_inicial + " como monto en la caja.");
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Error:" + ex);
+            }
+        }else{
+            JOptionPane.showMessageDialog(null,"Ya se establecio un monto para la caja con fecha: "+fecha);
+        }
+        
+        
+        Conexion.cierraConexion();
 
-   
+        
+    }
+
+    public void insertMovimientosCaja(String fecha,String hora,String motivo,double monto,String tipo,String correo){
+    //    insertMovimientosCaja(id,fecha,hora,motivo,monto,tipo)
+        PreparedStatement stmnt = null;
+        try {
+                stmnt = Conexion.conectar().prepareStatement("INSERT INTO movimientos_caja values(0,'" + fecha + "','" + hora + "','"+motivo+"',"+monto+",'"+tipo+"','"+correo+"')");
+                stmnt.executeUpdate();
+                JOptionPane.showMessageDialog(null, tipo+" de $"+monto+" registrado correctamente.");
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Error:" + ex);
+            }
+    Conexion.cierraConexion();
+    }
+
+    public String getNameUser(String correo)
+    {//select CONCAT(apellidop,' ',apellidom,' ',nombre) as nc from usuarios
+        PreparedStatement stmnt = null;
+        ResultSet rs = null;
+        String completeName="";
+        try {
+            stmnt = Conexion.conectar().prepareStatement("select CONCAT(apellidop,' ',apellidom,' ',nombre) as nc from usuarios WHERE correo='"+correo+"'");
+            rs = stmnt.executeQuery();
+            while (rs.next()) {
+               completeName = rs.getString("nc");
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error:" + e);
+        }
+        Conexion.cierraConexion();
+        return completeName;
+    }
+    
+    public String getTypeUser(String correo) {
+    //select CONCAT(apellidop,' ',apellidom,' ',nombre) as nc from usuarios
+        PreparedStatement stmnt = null;
+        ResultSet rs = null;
+        String userType = "";
+        try {
+            stmnt = Conexion.conectar().prepareStatement("select area from usuarios WHERE correo='" + correo + "'");
+            rs = stmnt.executeQuery();
+            while (rs.next()) {
+                userType = rs.getString("area");
+                System.out.println("flag from metodo"+userType);
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error:" + e);
+        }
+        Conexion.cierraConexion();
+        return userType;
+    }
+    
+    /*public void setCaja(String fecha,String hora,Double monto_inicial,Double monto_final){
+        //  String fecha,String hora,Doble monto_inicial,Double monto_final
+        //fecha,hora,monto_inicial,monto_final,correo
+        PreparedStatement stmnt = null;
+        try {
+            stmnt = Conexion.conectar().prepareStatement("INSERT INTO caja values(0,'"+fecha+"','"+hora+"',"+monto_inicial+",0)");
+            stmnt.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Correo: " + correo + " registrado correctamente en la base de datos");
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error:" + ex);
+        }
+        Conexion.cierraConexion();
+    }
+    */
+    
+    public Double selectDataCaja(String fecha){
+        PreparedStatement stmnt = null;
+        ResultSet rs = null;
+        Double monto_inicial = 0.0;
+        try {
+            stmnt = Conexion.conectar().prepareStatement("select monto_inicial from caja WHERE fecha='"+fecha+"'");
+            rs = stmnt.executeQuery();
+            while (rs.next()) {
+                monto_inicial = rs.getDouble("monto_inicial");
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error:" + e);
+        }
+        Conexion.cierraConexion();
+     return monto_inicial;
+    }
+
+
 }

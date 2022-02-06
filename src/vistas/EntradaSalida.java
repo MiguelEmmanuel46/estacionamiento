@@ -83,6 +83,8 @@ int id_tarifaDB =0;
         jPanel2 = new javax.swing.JPanel();
         jButton2 = new javax.swing.JButton();
         txtPlacaSalida = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        areaMensajes = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new java.awt.GridLayout(1, 0));
@@ -190,25 +192,32 @@ int id_tarifaDB =0;
 
         txtPlacaSalida.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
 
+        areaMensajes.setColumns(20);
+        areaMensajes.setRows(5);
+        jScrollPane1.setViewportView(areaMensajes);
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(45, 45, 45)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtPlacaSalida))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(34, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtPlacaSalida, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2))
+                .addGap(18, 18, 18))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(108, 108, 108)
+                .addGap(50, 50, 50)
                 .addComponent(txtPlacaSalida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(54, 54, 54)
+                .addGap(33, 33, 33)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(164, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(129, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel2);
@@ -263,9 +272,22 @@ int id_tarifaDB =0;
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        
+        areaMensajes.setText("");
+            String[] mensajes = null;
            String horaF = labelVEReloj.getText();
            String placas = txtPlacaSalida.getText();
-           metodos.calculateRateToPay(horaF,placas);
+           boolean checkisEnrollment;
+            checkisEnrollment = metodos.checkEnrollmentIsNull(placas);
+           if (checkisEnrollment==true) {
+               mensajes = metodos.calculateRateToPay(horaF, placas);
+               for (int i = 0; i < mensajes.length; i++) {
+                   areaMensajes.append(mensajes[i]);
+               }
+            }else{
+           JOptionPane.showMessageDialog(null, "La Placa ya ha registrado salida");
+           }
+          
            txtPlacaSalida.setText("");
         /*for (int i = 0; i < nvec.size(); i++) {
             System.out.println(nvec.elementAt(i)+"\n");
@@ -309,6 +331,7 @@ int id_tarifaDB =0;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextArea areaMensajes;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
@@ -316,6 +339,7 @@ int id_tarifaDB =0;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel labelVEReloj;
     private javax.swing.JTextField txtPlaca;
     private javax.swing.JTextField txtPlacaSalida;
