@@ -5,14 +5,19 @@
  */
 package vistas;
 
+import componentes.Funciones;
 import componentes.Metodos;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.UIManager;
+
 
 /**
  *
@@ -26,6 +31,9 @@ Metodos metodos = new Metodos();
     public ConfiguracionCaja() {
        
         initComponents();
+        try{
+            setIconImage(new ImageIcon(getClass().getResource ("../multimedia/iconoApp.png")).getImage());
+        }catch(Exception ex){JOptionPane.showMessageDialog(null,"wdwd"+ex);}
             //NO PERMITO QUE PUEDAN CAMBIAR EL TAMAÑO DE LA VENTANA
         this.setResizable(false);
 
@@ -49,6 +57,17 @@ Metodos metodos = new Metodos();
         }
         labelCajaEstablecida.setText("Monto iniciado en: $"+Double.toString(metodos.selectDataCaja(metodos.getDateT())));
         labelCajaEstablecidaFecha.setText(metodos.getDateT());
+        try{
+        Funciones f = new Funciones();
+        String fechaSistema=metodos.getDateT();
+        java.util.Date date2 = new SimpleDateFormat("yyyy-MM-dd").parse(fechaSistema);
+        jDateChooser1.setDate(date2);
+        }catch (ParseException ex) {
+            Logger.getLogger(ConfiguracionCaja.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        btnReporte.setEnabled(false);
+        
+        //jPanel1.add(datePicker);
     }
 
     /**
@@ -68,17 +87,20 @@ Metodos metodos = new Metodos();
         jLabel2 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
         dashboard = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         txtMontoInicial = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
-        jButton2 = new javax.swing.JButton();
+        buttonCorte = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        txtInfo = new javax.swing.JTextArea();
         jLabel5 = new javax.swing.JLabel();
         labelCajaEstablecidaFecha = new javax.swing.JLabel();
         labelCajaEstablecida = new javax.swing.JLabel();
+        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        btnReporte = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -142,6 +164,9 @@ Metodos metodos = new Metodos();
 
         header.add(iconMaxClose, java.awt.BorderLayout.LINE_END);
 
+        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/iconoAries.png"))); // NOI18N
+        header.add(jLabel11, java.awt.BorderLayout.CENTER);
+
         getContentPane().add(header, java.awt.BorderLayout.PAGE_START);
 
         dashboard.setBackground(new java.awt.Color(144, 203, 249));
@@ -159,12 +184,17 @@ Metodos metodos = new Metodos();
             }
         });
 
-        jButton2.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
-        jButton2.setText("Corte");
+        buttonCorte.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
+        buttonCorte.setText("Corte");
+        buttonCorte.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonCorteActionPerformed(evt);
+            }
+        });
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        txtInfo.setColumns(20);
+        txtInfo.setRows(5);
+        jScrollPane1.setViewportView(txtInfo);
 
         jLabel5.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         jLabel5.setText("Cierra caja");
@@ -172,6 +202,17 @@ Metodos metodos = new Metodos();
         labelCajaEstablecidaFecha.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
 
         labelCajaEstablecida.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
+
+        jDateChooser1.setFocusable(false);
+        jDateChooser1.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
+
+        btnReporte.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
+        btnReporte.setText("Reporte");
+        btnReporte.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReporteActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout dashboardLayout = new javax.swing.GroupLayout(dashboard);
         dashboard.setLayout(dashboardLayout);
@@ -183,8 +224,18 @@ Metodos metodos = new Metodos();
                     .addGroup(dashboardLayout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(dashboardLayout.createSequentialGroup()
+                                .addGap(162, 162, 162)
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(9, 9, 9))
                             .addComponent(jScrollPane1)
-                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGroup(dashboardLayout.createSequentialGroup()
+                                .addComponent(buttonCorte, javax.swing.GroupLayout.PREFERRED_SIZE, 421, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnReporte, javax.swing.GroupLayout.PREFERRED_SIZE, 386, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(dashboardLayout.createSequentialGroup()
                         .addGap(82, 82, 82)
                         .addGroup(dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -192,17 +243,13 @@ Metodos metodos = new Metodos();
                             .addComponent(txtMontoInicial, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(190, 190, 190)
-                        .addComponent(labelCajaEstablecidaFecha, javax.swing.GroupLayout.DEFAULT_SIZE, 359, Short.MAX_VALUE)
+                        .addComponent(labelCajaEstablecidaFecha, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE)
                         .addGap(12, 12, 12)))
                 .addContainerGap())
-            .addGroup(dashboardLayout.createSequentialGroup()
-                .addGap(172, 172, 172)
-                .addComponent(jLabel5)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(dashboardLayout.createSequentialGroup()
                     .addGap(560, 560, 560)
-                    .addComponent(labelCajaEstablecida, javax.swing.GroupLayout.DEFAULT_SIZE, 359, Short.MAX_VALUE)
+                    .addComponent(labelCajaEstablecida, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE)
                     .addGap(20, 20, 20)))
         );
         dashboardLayout.setVerticalGroup(
@@ -216,15 +263,19 @@ Metodos metodos = new Metodos();
                     .addComponent(labelCajaEstablecidaFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(16, 16, 16)
-                .addComponent(jLabel5)
+                .addGroup(dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton2)
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addGroup(dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnReporte, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(buttonCorte, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(16, Short.MAX_VALUE))
             .addGroup(dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(dashboardLayout.createSequentialGroup()
                     .addGap(33, 33, 33)
@@ -289,6 +340,7 @@ Metodos metodos = new Metodos();
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        
         String fecha = metodos.getDateT();
         String hora = metodos.getHourT();
         Double monto_inicial = Double.parseDouble(txtMontoInicial.getText());        
@@ -299,6 +351,38 @@ Metodos metodos = new Metodos();
         
         
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void buttonCorteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCorteActionPerformed
+    /*try {*/
+        // TODO add your handling code here:
+        txtInfo.setText("");
+        Funciones f = new Funciones();
+        String date3 = f.getFecha(jDateChooser1);
+        Double ingresos,egresos,caja,res1,res2,res3;
+        ingresos = metodos.getIngresosCaja(date3);
+        egresos = metodos.getEgresosCaja(date3);
+        caja = metodos.selectDataCaja(date3);
+        res1 = caja-egresos;
+        res2 = caja+ingresos;
+        res3 = caja+ingresos-egresos;
+        txtInfo.append("Caja: $"+caja+"\n"+"Ingresos: $"+ingresos+"\nEgresos: $"+egresos+"\nTotal = $"+res3);
+        btnReporte.setEnabled(true);
+        
+    /*} catch (ParseException ex) {
+        Logger.getLogger(ConfiguracionCaja.class.getName()).log(Level.SEVERE, null, ex);
+    }
+       */
+        
+        
+    }//GEN-LAST:event_buttonCorteActionPerformed
+
+    private void btnReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReporteActionPerformed
+        // TODO add your handling code here:
+        Funciones f = new Funciones();
+         String date3 = f.getFecha(jDateChooser1);
+        metodos.reporteDatosFiltrados(date3);
+        
+    }//GEN-LAST:event_btnReporteActionPerformed
 
     /**
      * @param args the command line arguments
@@ -343,14 +427,17 @@ Metodos metodos = new Metodos();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnReporte;
     private javax.swing.JPanel buttonBack;
     private javax.swing.JPanel buttonClose;
+    private javax.swing.JButton buttonCorte;
     private javax.swing.JPanel dashboard;
     private javax.swing.JPanel header;
     private javax.swing.JPanel iconMaxClose;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -358,9 +445,9 @@ Metodos metodos = new Metodos();
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel labelCajaEstablecida;
     private javax.swing.JLabel labelCajaEstablecidaFecha;
+    private javax.swing.JTextArea txtInfo;
     private javax.swing.JTextField txtMontoInicial;
     // End of variables declaration//GEN-END:variables
 }

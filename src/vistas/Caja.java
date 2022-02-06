@@ -12,6 +12,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 
@@ -29,6 +30,9 @@ CustomFont cf = new CustomFont();
     public Caja() {
        
         initComponents();
+        try{
+            setIconImage(new ImageIcon(getClass().getResource ("../multimedia/iconoApp.png")).getImage());
+        }catch(Exception ex){JOptionPane.showMessageDialog(null,"wdwd"+ex);}
             //NO PERMITO QUE PUEDAN CAMBIAR EL TAMAÑO DE LA VENTANA
         this.setResizable(false);
 
@@ -75,6 +79,7 @@ CustomFont cf = new CustomFont();
         jLabel2 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
         dashboard = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         txtMonto = new javax.swing.JTextField();
@@ -149,6 +154,9 @@ CustomFont cf = new CustomFont();
         iconMaxClose.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 50, 50));
 
         header.add(iconMaxClose, java.awt.BorderLayout.LINE_END);
+
+        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/iconoAries.png"))); // NOI18N
+        header.add(jLabel11, java.awt.BorderLayout.CENTER);
 
         getContentPane().add(header, java.awt.BorderLayout.PAGE_START);
 
@@ -383,6 +391,7 @@ CustomFont cf = new CustomFont();
     private javax.swing.JPanel header;
     private javax.swing.JPanel iconMaxClose;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

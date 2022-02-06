@@ -35,6 +35,9 @@ CustomFont cf;
         this.cf = new CustomFont();
        
         initComponents();
+        try{
+            setIconImage(new ImageIcon(getClass().getResource ("../multimedia/iconoApp.png")).getImage());
+        }catch(Exception ex){JOptionPane.showMessageDialog(null,"wdwd"+ex);}
                 Map<Integer, String> datos = metodos.getRate();
         datos.forEach((k,v) -> vESListaVehiculo.addItem(v));
         DateTimeFormatter formateador = DateTimeFormatter.ofPattern("HH:mm:ss");
@@ -87,6 +90,7 @@ CustomFont cf;
         jLabel2 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
         dashboard = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         txtPlaca = new javax.swing.JTextField();
@@ -166,6 +170,9 @@ CustomFont cf;
         iconMaxClose.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 50, 50));
 
         header.add(iconMaxClose, java.awt.BorderLayout.LINE_END);
+
+        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/iconoAries.png"))); // NOI18N
+        header.add(jLabel11, java.awt.BorderLayout.CENTER);
 
         getContentPane().add(header, java.awt.BorderLayout.PAGE_START);
 
@@ -512,6 +519,7 @@ CustomFont cf;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

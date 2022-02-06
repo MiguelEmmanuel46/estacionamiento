@@ -48,12 +48,34 @@ import java.awt.print.PrinterJob;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import javax.print.PrintException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.printing.PDFPageable;
+import org.apache.poi.hssf.usermodel.HSSFPalette;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.ClientAnchor;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.Drawing;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Picture;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.util.IOUtils;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class Metodos 
 {
@@ -64,7 +86,6 @@ public class Metodos
     DefaultTableModel modelo;
     public static String fileNameToBase;
     public static String consultaFiltrarToExcel;
-    public static String[] vect2;
     public static String correoEmpleado="";
     public static String nombreEmpleado="";
     public static String tipoEmpleado="";
@@ -840,6 +861,215 @@ public class Metodos
         Conexion.cierraConexion();
      return monto_inicial;
     }
+    
+    public Double getIngresosCaja(String fecha){
+        PreparedStatement stmnt = null;
+        ResultSet rs = null;
+        Double monto_ingresos=0.0;
+        //SELECT SUM(monto) as monto_ingresos from movimientos_caja WHERE tipo='Ingreso'
+        try {
+            stmnt = Conexion.conectar().prepareStatement("SELECT SUM(monto) as monto_ingresos from movimientos_caja WHERE tipo='Ingreso' AND fecha='"+fecha+"'");
+            rs = stmnt.executeQuery();
+            while (rs.next()) {
+                monto_ingresos = rs.getDouble("monto_ingresos");
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error:" + e);
+        }
+        Conexion.cierraConexion();
+    return monto_ingresos;
+    }
+    
+    public Double getEgresosCaja(String fecha) {
+        PreparedStatement stmnt = null;
+        ResultSet rs = null;
+        Double monto_egresos = 0.0;
+        //SELECT SUM(monto) as monto_egresos from movimientos_caja WHERE tipo='Ingreso'
+        try {
+            stmnt = Conexion.conectar().prepareStatement("SELECT SUM(monto) as monto_egresos from movimientos_caja WHERE tipo='Egreso' AND fecha='" + fecha + "'");
+            rs = stmnt.executeQuery();
+            while (rs.next()) {
+                monto_egresos = rs.getDouble("monto_egresos");
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error:" + e);
+        }
+        Conexion.cierraConexion();
+        return monto_egresos;
+    }
 
+        public void reporteDatosFiltrados(String fechaParam) {
+            
+            /************************************************************************************/
+           
+        
+        
+                   
+                   
+            /*************************************************************************************/
+        Date fecha = new Date();
+        String nombreArchivoCreado = null;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-hh-mm-ss");
+        String Fecha55 = sdf.format(fecha);
+
+        Workbook book = new XSSFWorkbook();
+        Sheet sheet = book.createSheet("Reporte");
+
+        try {
+            InputStream is = new FileInputStream("C:\\Multimedia\\iconoApp.png");
+            byte[] bytes = IOUtils.toByteArray(is);
+            int imgIndex = book.addPicture(bytes, Workbook.PICTURE_TYPE_JPEG);
+            is.close();
+
+            CreationHelper help = book.getCreationHelper();
+            Drawing draw = sheet.createDrawingPatriarch();
+
+            ClientAnchor anchor = help.createClientAnchor();
+            anchor.setCol1(0);
+            anchor.setRow1(0);
+            Picture pict = draw.createPicture(anchor, imgIndex);
+            pict.resize(2, 4);
+
+            CellStyle tituloEstilo = book.createCellStyle();
+            tituloEstilo.setAlignment(HorizontalAlignment.CENTER);
+            tituloEstilo.setVerticalAlignment(VerticalAlignment.CENTER);
+            Font fuenteTitulo = book.createFont();
+            fuenteTitulo.setFontName("Arial");
+            fuenteTitulo.setBold(true);
+            fuenteTitulo.setFontHeightInPoints((short) 14);
+            tituloEstilo.setFont(fuenteTitulo);
+
+            Row filaTitulo = sheet.createRow(1);
+            Cell celdaTitulo = filaTitulo.createCell(1);
+            celdaTitulo.setCellStyle(tituloEstilo);
+            celdaTitulo.setCellValue("Reporte caja");
+
+            sheet.addMergedRegion(new CellRangeAddress(1, 2, 1, 3));
+            String[] cabecera = {"No.","Fecha","Hora","Motivo","Monto","Tipo","Registró"};
+
+            CellStyle headerStyle = book.createCellStyle();
+            /**
+             * ***************************************************************
+             */
+            HSSFWorkbook hwb = new HSSFWorkbook();
+            HSSFPalette palette = hwb.getCustomPalette();
+            // get the color which most closely matches the color you want to use
+            HSSFColor myColor = palette.findSimilarColor(155, 0, 0);
+            // get the palette index of that color 
+            short palIndex = myColor.getIndex();
+            /**
+             * ****************************************************************
+             */
+            headerStyle.setFillForegroundColor(palIndex);
+            headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+            headerStyle.setBorderBottom(BorderStyle.THIN);
+            headerStyle.setBorderLeft(BorderStyle.THIN);
+            headerStyle.setBorderRight(BorderStyle.THIN);
+            headerStyle.setBorderBottom(BorderStyle.THIN);
+
+            Font font = book.createFont();
+            font.setFontName("Arial");
+            font.setBold(true);
+            font.setColor(IndexedColors.WHITE.getIndex());
+            font.setFontHeightInPoints((short) 12);
+            headerStyle.setFont(font);
+
+            Row filaEncabezados = sheet.createRow(4);
+
+            for (int i = 0; i < cabecera.length; i++) {
+                Cell celdaEnzabezado = filaEncabezados.createCell(i);
+                celdaEnzabezado.setCellStyle(headerStyle);
+                celdaEnzabezado.setCellValue(cabecera[i]);
+            }
+
+            Conexion con = new Conexion();
+            PreparedStatement ps;
+            ResultSet rs;
+            
+            //Connection conn = (Connection) con.conectar();
+
+            int numFilaDatos = 5;
+
+            CellStyle datosEstilo = book.createCellStyle();
+            datosEstilo.setBorderBottom(BorderStyle.THIN);
+            datosEstilo.setBorderLeft(BorderStyle.THIN);
+            datosEstilo.setBorderRight(BorderStyle.THIN);
+            datosEstilo.setBorderBottom(BorderStyle.THIN);
+
+            ps = Conexion.conectar().prepareStatement("SELECT * FROM movimientos_caja WHERE fecha='"+fechaParam+"' ORDER BY tipo");
+            rs = ps.executeQuery();
+            
+            int numCol = rs.getMetaData().getColumnCount();
+            
+
+            while (rs.next()) {
+                Row filaDatos = sheet.createRow(numFilaDatos);
+
+                for (int a = 0; a < numCol; a++) {
+
+                    Cell CeldaDatos = filaDatos.createCell(a);
+                    CeldaDatos.setCellStyle(datosEstilo);
+                    CeldaDatos.setCellValue(rs.getString(a + 1));
+                }
+
+                //Cell celdaImporte = filaDatos.createCell(4);
+                //celdaImporte.setCellStyle(datosEstilo);
+                //celdaImporte.setCellFormula(String.format("C%d+D%d", numFilaDatos + 1, numFilaDatos + 1));
+                numFilaDatos++;
+
+            }
+            
+            /*************************************************************************************************/
+            double ingresos = getIngresosCaja(fechaParam);
+            double egresos = getEgresosCaja(fechaParam);
+            double caja = selectDataCaja(fechaParam);
+            /****************************************************************************************************/
+            Row filaDatos2 = sheet.createRow(numFilaDatos+1);
+            Cell CeldaDatos2 = filaDatos2.createCell(5);
+            Cell CeldaDatos3 = filaDatos2.createCell(6);
+            CeldaDatos2.setCellValue("Total Egresos:");
+            CeldaDatos3.setCellValue(getEgresosCaja(fechaParam));
+            
+            
+            Row filaDatos3 = sheet.createRow(numFilaDatos+1);
+            Cell CeldaDatos4 = filaDatos3.createCell(5);
+            Cell CeldaDatos5 = filaDatos3.createCell(6);
+            CeldaDatos4.setCellValue("Total Ingresos:");
+            CeldaDatos5.setCellValue(getIngresosCaja(fechaParam));
+            /*Row filaDatos3 = sheet.createRow(numFilaDatos+2);
+            Cell CeldaDatos3 = filaDatos3.createCell(6);
+            CeldaDatos3.setCellValue("popo2");
+            
+            Row filaDatos4 = sheet.createRow(numFilaDatos+3);
+            Cell CeldaDatos4 = filaDatos4.createCell(6);
+            CeldaDatos4.setCellValue("popo3");*/
+            
+            
+
+            for (int i = 0; i < numCol; i++) {
+                sheet.autoSizeColumn(i);
+            }
+            /*sheet.autoSizeColumn(0);
+            sheet.autoSizeColumn(1);
+            sheet.autoSizeColumn(2);
+            sheet.autoSizeColumn(3);*/
+
+            sheet.setZoom(100);
+
+            FileOutputStream fileOut = new FileOutputStream("C:\\FilesExportExcel\\" + Fecha55 + "ReporteFoliosFiltrados.xlsx");
+            nombreArchivoCreado = "C:\\FilesExportExcel\\" + Fecha55 + "ReporteFoliosFiltrados.xlsx";
+            book.write(fileOut);
+            fileOut.close();
+            JOptionPane.showMessageDialog(null, "Exportado");
+
+        } catch (FileNotFoundException ex) {
+            System.out.println("" + ex);
+        } catch (IOException ex) {
+            System.out.println("" + ex);
+        } catch (SQLException ex) {
+            System.out.println("" + ex);
+        }
+        //Vistas.Filtrar.jButton2.setText(nombreArchivoCreado);
+    }
 
 }

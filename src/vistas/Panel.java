@@ -28,6 +28,9 @@ Metodos metodos = new Metodos();
     public Panel() {
        
         initComponents();
+        try{
+            setIconImage(new ImageIcon(getClass().getResource ("../multimedia/iconoApp.png")).getImage());
+        }catch(Exception ex){JOptionPane.showMessageDialog(null,"wdwd"+ex);}
             //NO PERMITO QUE PUEDAN CAMBIAR EL TAMAÑO DE LA VENTANA
         this.setResizable(false);
 
@@ -58,6 +61,8 @@ Metodos metodos = new Metodos();
         jLabel2 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel11 = new javax.swing.JLabel();
         dashboard = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
@@ -152,6 +157,14 @@ Metodos metodos = new Metodos();
 
         header.add(iconMaxClose, java.awt.BorderLayout.LINE_END);
 
+        jPanel2.setOpaque(false);
+        jPanel2.setLayout(new java.awt.BorderLayout());
+
+        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/iconoAries.png"))); // NOI18N
+        jPanel2.add(jLabel11, java.awt.BorderLayout.CENTER);
+
+        header.add(jPanel2, java.awt.BorderLayout.LINE_START);
+
         getContentPane().add(header, java.awt.BorderLayout.PAGE_START);
 
         dashboard.setBackground(new java.awt.Color(73, 128, 242));
@@ -178,6 +191,12 @@ Metodos metodos = new Metodos();
         jPanel13.setBackground(new java.awt.Color(73, 128, 242));
 
         jPanel22.setLayout(new javax.swing.BoxLayout(jPanel22, javax.swing.BoxLayout.LINE_AXIS));
+
+        jPanel5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel5MouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -549,6 +568,11 @@ Metodos metodos = new Metodos();
         ccja.setVisible(true);
     }//GEN-LAST:event_jLabel9MouseClicked
 
+    private void jPanel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel5MouseClicked
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_jPanel5MouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -607,6 +631,7 @@ Metodos metodos = new Metodos();
     private javax.swing.JPanel iconMaxClose;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
@@ -630,6 +655,7 @@ Metodos metodos = new Metodos();
     private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel18;
     private javax.swing.JPanel jPanel19;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel20;
     private javax.swing.JPanel jPanel21;
     private javax.swing.JPanel jPanel22;
