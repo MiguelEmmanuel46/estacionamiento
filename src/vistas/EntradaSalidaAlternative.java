@@ -27,12 +27,12 @@ import javax.swing.UIManager;
 public class EntradaSalidaAlternative extends javax.swing.JFrame {
 Metodos metodos = new Metodos();
 int id_tarifaDB =0;
-CustomFont cf;
+
     /**
      * Creates new form CajaAlternative
      */
     public EntradaSalidaAlternative() {
-        this.cf = new CustomFont();
+        
        
         initComponents();
         try{

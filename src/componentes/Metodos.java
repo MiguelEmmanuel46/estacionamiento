@@ -1269,6 +1269,44 @@ public class Metodos
         Conexion.cierraConexion();
     
     }
+    
+    public boolean verificarSalidaNoRegistradaPension(String telefono,String fecha){
+    //select hora_salida from movimientos_pension WHERE telefono='2225790336' AND fecha='2022-02-06'
+        boolean snr = false;
+        PreparedStatement stmnt = null;
+        ResultSet rs = null;
+        String hsdb="";
+        try {
+            stmnt = Conexion.conectar().prepareStatement("select hora_salida from movimientos_pension WHERE telefono='"+telefono+"' AND fecha='"+fecha+"'");
+            rs = stmnt.executeQuery();
+            while (rs.next()) {
+                hsdb = rs.getString("hora_salida");
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error:" + e);
+        }
+        Conexion.cierraConexion();
+        if (hsdb.equals("00:00:00")) {
+            snr=true;
+        }else{snr=true;}
+    
+    return snr;
+    }
+    
+    
+    public void saveMovimientosEntradaSalidaPension(String fecha,String hora_entrada,String telefono,String correo){
+    //id_movimiento,fecha,hora_entrada,hora_salida,tiempo,telefono,correo
+        PreparedStatement stmnt = null;
+        try {
+            stmnt = Conexion.conectar().prepareStatement("insert into movimientos_pension values(0,'"+fecha+"','"+hora_entrada+"','00:00:00','sc','"+telefono+"','"+correo+"')");
+            stmnt.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Usuario registrado correctamente en la base de datos");
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error:" + ex);
+        }
+        Conexion.cierraConexion();
+    
+    }
         
         
     

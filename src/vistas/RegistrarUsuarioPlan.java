@@ -37,7 +37,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author sombra
  */
-public class Planes extends javax.swing.JFrame {
+public class RegistrarUsuarioPlan extends javax.swing.JFrame {
 Metodos metodos = new Metodos();
 int idPlanDB =0;
 String nombreArchivoFromFileChooser ="no selecciono";
@@ -45,7 +45,7 @@ Funciones f = new Funciones();
     /**
      * Creates new form CajaAlternative
      */
-    public Planes() {
+    public RegistrarUsuarioPlan() {
        
         initComponents();
         try{
@@ -608,7 +608,7 @@ Funciones f = new Funciones();
                 Files.copy(Origen, Destino, REPLACE_EXISTING);
                 JOptionPane.showMessageDialog(null, "El archivo fué copiado con éxito a la carpeta: ");
             } catch (IOException ex) {
-                Logger.getLogger(Planes.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(RegistrarUsuarioPlan.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         nombreArchivoFromFileChooser = archivo.getName();
@@ -700,14 +700,22 @@ Funciones f = new Funciones();
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Planes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RegistrarUsuarioPlan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Planes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RegistrarUsuarioPlan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Planes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RegistrarUsuarioPlan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Planes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RegistrarUsuarioPlan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -720,7 +728,7 @@ Funciones f = new Funciones();
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Planes().setVisible(true);
+                new RegistrarUsuarioPlan().setVisible(true);
             }
         });
     }
