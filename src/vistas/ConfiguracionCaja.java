@@ -25,6 +25,7 @@ import javax.swing.JPanel;
  */
 public class ConfiguracionCaja extends javax.swing.JFrame {
 Metodos metodos = new Metodos();
+Funciones f = new Funciones();
     /**
      * Creates new form CajaAlternative
      */
@@ -356,7 +357,7 @@ Metodos metodos = new Metodos();
     /*try {*/
         // TODO add your handling code here:
         txtInfo.setText("");
-        Funciones f = new Funciones();
+        
         String date3 = f.getFecha(jDateChooser1);
         Double ingresos,egresos,caja,res1,res2,res3;
         ingresos = metodos.getIngresosCaja(date3);
@@ -378,9 +379,9 @@ Metodos metodos = new Metodos();
 
     private void btnReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReporteActionPerformed
         // TODO add your handling code here:
-        Funciones f = new Funciones();
+        
          String date3 = f.getFecha(jDateChooser1);
-        metodos.reporteDatosFiltrados(date3);
+        metodos.reporteCaja(date3);
         
     }//GEN-LAST:event_btnReporteActionPerformed
 

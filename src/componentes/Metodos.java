@@ -898,7 +898,7 @@ public class Metodos
         return monto_egresos;
     }
 
-        public void reporteDatosFiltrados(String fechaParam) {
+    public void reporteCaja(String fechaParam) {
             
             /************************************************************************************/
            
@@ -1023,19 +1023,38 @@ public class Metodos
             double ingresos = getIngresosCaja(fechaParam);
             double egresos = getEgresosCaja(fechaParam);
             double caja = selectDataCaja(fechaParam);
+            
+            double res3t;
+            
+            res3t = caja + ingresos - egresos;
             /****************************************************************************************************/
             Row filaDatos2 = sheet.createRow(numFilaDatos+1);
             Cell CeldaDatos2 = filaDatos2.createCell(5);
             Cell CeldaDatos3 = filaDatos2.createCell(6);
-            CeldaDatos2.setCellValue("Total Egresos:");
-            CeldaDatos3.setCellValue(getEgresosCaja(fechaParam));
+            CeldaDatos2.setCellValue("Caja");
+            CeldaDatos3.setCellValue(caja);
             
             
-            Row filaDatos3 = sheet.createRow(numFilaDatos+1);
+            Row filaDatos3 = sheet.createRow(numFilaDatos+2);
             Cell CeldaDatos4 = filaDatos3.createCell(5);
             Cell CeldaDatos5 = filaDatos3.createCell(6);
             CeldaDatos4.setCellValue("Total Ingresos:");
             CeldaDatos5.setCellValue(getIngresosCaja(fechaParam));
+       
+            
+            Row filaDatos4 = sheet.createRow(numFilaDatos+3);
+            Cell CeldaDatos6 = filaDatos4.createCell(5);
+            Cell CeldaDatos7 = filaDatos4.createCell(6);
+            CeldaDatos6.setCellValue("Total Egresos");
+            CeldaDatos7.setCellValue(getEgresosCaja(fechaParam));
+            
+            Row filaDatos5 = sheet.createRow(numFilaDatos + 4);
+            Cell CeldaDatos8 = filaDatos5.createCell(5);
+            Cell CeldaDatos9 = filaDatos5.createCell(6);
+            CeldaDatos8.setCellValue("Caja despues de movimientos");
+            CeldaDatos9.setCellValue(res3t);
+            
+            
             /*Row filaDatos3 = sheet.createRow(numFilaDatos+2);
             Cell CeldaDatos3 = filaDatos3.createCell(6);
             CeldaDatos3.setCellValue("popo2");
@@ -1071,5 +1090,187 @@ public class Metodos
         }
         //Vistas.Filtrar.jButton2.setText(nombreArchivoCreado);
     }
+    
+    public Map<Integer, String> getPlan() {
+        PreparedStatement stmnt = null;
+        ResultSet rs = null;
+
+        Map<Integer, String> rateArray = new HashMap<Integer, String>();
+        try {
+            stmnt = Conexion.conectar().prepareStatement("SELECT id_plan,tipo_plan from plan");
+            rs = stmnt.executeQuery();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error:" + ex);
+        }
+        try {
+            while (rs.next()) {
+                rateArray.put(rs.getInt("id_plan"), rs.getString("tipo_plan"));
+
+            }
+        } catch (SQLException ex) {
+        }
+        Conexion.cierraConexion();
+        return rateArray;
+
+    }
+    
+    public void createTicketPension(String employeeName,String dia_inicio){
+        //Double tarifa = getVehicleType(id_tarifaDB);
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        String dia_vencimiento;
+        LocalDate fechaInicio = LocalDate.parse(dia_inicio);
+        LocalDate fechaVencimiento = fechaInicio.plusDays(7);
+        dia_vencimiento = fechaVencimiento.toString();
+        
+        System.out.println("dia_inicio= "+dia_inicio+"\ndia_vencimiento="+dia_vencimiento);
+        
+        
+    /*    //System.out.println(timestamp);
+        String lop = timestamp.toString();
+        String result = lop.replaceAll("\\p{Punct}", "");
+        String result2 = result.replace(" ", "");
+        Paragraph line1, line2, line3, line4, line5, line6, line7, line8, line9, line10, line11, line12, line13, line14, line15;
+        line1 = new Paragraph("\n\n\n\n\n\n\n\n\n\n=====================================================================");
+        line2 = new Paragraph("Estacionamiento Aries");
+        line3 = new Paragraph("Av 6 Ote 406");
+        line4 = new Paragraph("Centro histórico de Puebla.");
+        line5 = new Paragraph("72000 Puebla, Pue.");
+        line6 = new Paragraph("");
+        line7 = new Paragraph("");
+        line8 = new Paragraph("Atendio");
+        line9 = new Paragraph(employeeName);
+        line10 = new Paragraph("——————————–——————————–——————————–——————————–");
+        line11 = new Paragraph(dia_inicio);
+        line12 = new Paragraph(dia_vencimiento);
+        line13 = new Paragraph(" Tarifa por hora o fraccion, sin tolerancia:" + tarifa);
+        line14 = new Paragraph(" Costo por boleto perdido $100 ");
+        line15 = new Paragraph("=====================================================================");
+        line1.setAlignment(Element.ALIGN_CENTER);
+        line2.setAlignment(Element.ALIGN_CENTER);
+        line3.setAlignment(Element.ALIGN_CENTER);
+        line4.setAlignment(Element.ALIGN_CENTER);
+        line5.setAlignment(Element.ALIGN_CENTER);
+        line6.setAlignment(Element.ALIGN_CENTER);
+        line7.setAlignment(Element.ALIGN_CENTER);
+        line8.setAlignment(Element.ALIGN_CENTER);
+        line9.setAlignment(Element.ALIGN_CENTER);
+        line10.setAlignment(Element.ALIGN_CENTER);
+        line11.setAlignment(Element.ALIGN_CENTER);
+        line12.setAlignment(Element.ALIGN_CENTER);
+        line13.setAlignment(Element.ALIGN_CENTER);
+        line14.setAlignment(Element.ALIGN_CENTER);
+        line15.setAlignment(Element.ALIGN_CENTER);
+
+        // TODO code application logic here
+        try {
+            Document doc = new Document();
+            PdfWriter pdf = PdfWriter.getInstance(doc, new FileOutputStream("C:\\tmp\\" + result2 + "ticket.pdf"));
+            doc.open();
+            Barcode128 code = new Barcode128();
+            code.setCode(placa);
+            Image img = code.createImageWithBarcode(pdf.getDirectContent(), BaseColor.BLACK, BaseColor.BLACK);
+            img.scalePercent(400);
+            img.setAlignment(Element.ALIGN_CENTER);
+
+            //doc.add(new Paragraph("Estacionamiento Aries")); //Nombre establecimient)o
+            doc.add(line1);
+            doc.add(line2);
+            doc.add(line3);
+            doc.add(line4);
+            doc.add(line5);
+            doc.add(line6);
+            doc.add(line7);
+            doc.add(line8);
+            doc.add(line9);
+            doc.add(line10);
+            doc.add(img);
+            doc.add(line11);
+            doc.add(line12);
+            doc.add(line13);
+            doc.add(line14);
+            doc.add(line15);
+
+            doc.close();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Barras.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (DocumentException ex) {
+            Logger.getLogger(Barras.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        //saveMovimientos(fecha, hora_entrada, id_tarifaDB, placa, employeeName);
+        //unComentLineToPrintimprimirTicket(result2);
+    */
+    }
+    
+    public int getDurecionPlan(int id_plan){
+        int duracion=0;
+        
+        PreparedStatement stmnt = null;
+        ResultSet rs = null;
+        
+        //SELECT SUM(monto) as monto_egresos from movimientos_caja WHERE tipo='Ingreso'
+        try {
+            stmnt = Conexion.conectar().prepareStatement("SELECT duracion from plan WHERE id_plan="+id_plan+"");
+            rs = stmnt.executeQuery();
+            while (rs.next()) {
+                duracion = rs.getInt("duracion");
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error:" + e);
+        }
+        Conexion.cierraConexion();
+    
+    return duracion;
+    }
+    
+    public String calcularfechaV(int id_plan,String dia_inicio,int cantidad_plan){
+    String dia_vencimiento="";
+        int duracion = 0;
+        duracion = getDurecionPlan(id_plan);
+        LocalDate fechaInicio = LocalDate.parse(dia_inicio);
+        LocalDate fechaVencimiento = fechaInicio.plusDays(duracion * cantidad_plan);
+        dia_vencimiento = fechaVencimiento.toString();
+    return dia_vencimiento;
+    }
+    
+    
+    public Double getPrecioPlan(int id_plan) {
+        double precio = 0.0;
+
+        PreparedStatement stmnt = null;
+        ResultSet rs = null;
+
+        //SELECT SUM(monto) as monto_egresos from movimientos_caja WHERE tipo='Ingreso'
+        try {
+            stmnt = Conexion.conectar().prepareStatement("SELECT precio from plan WHERE id_plan=" + id_plan + "");
+            rs = stmnt.executeQuery();
+            while (rs.next()) {
+                precio = rs.getDouble("precio");
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error:" + e);
+        }
+        Conexion.cierraConexion();
+
+        return precio;
+    }
+    
+    public void insertPension(String telefono,String nombre,String apellidop,String apellidom,String direccion,String identificacion,int id_plan,String dia_inicio,int cantidad_plan,boolean pagado){
+        //telefono,nombre,apellidop,apellidom,direccion,identificacion id_plan,dia_inicio,dia_vencimiento,cantidad_plan,pagado
+        PreparedStatement stmnt = null;
+        String dia_vencimiento = calcularfechaV(id_plan,dia_inicio,cantidad_plan);
+        try {
+            stmnt = Conexion.conectar().prepareStatement("INSERT INTO pension values ('" + telefono + "','" + nombre + "','" + apellidop + "','" + apellidom + "','" + direccion + "','" + identificacion + "'," + id_plan + ",'" + dia_inicio + "','" + dia_vencimiento + "'," + cantidad_plan + "," + pagado + ")");
+            stmnt.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Cliente para plan " + nombre + " " + apellidop + " " + apellidom + "ingresado correctamente a la base de datos");
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error:" + ex);
+        }
+        Conexion.cierraConexion();
+    
+    }
+        
+        
+    
 
 }

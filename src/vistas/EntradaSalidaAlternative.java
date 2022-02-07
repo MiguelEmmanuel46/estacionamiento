@@ -437,7 +437,7 @@ CustomFont cf;
             txtPlaca.setText("");
         }
 
-        //metodos.generarTicket(correo,fechaF,hora_entrada,id_tarifaDB,placa);
+        metodos.generarTicket(correo,fechaF,hora_entrada,id_tarifaDB,placa);
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
