@@ -274,25 +274,30 @@ Metodos metodos = new Metodos();
 
     private void btnRegEntradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegEntradaActionPerformed
         // TODO add your handling code here:
+        long longArray[]=null;
         String hora_entrada = labelReloj.getText();
         String telefono = txtId.getText();
         String correo = Metodos.correoEmpleado;
         LocalDate todaysDate = LocalDate.now();
         String fecha = todaysDate.toString();
-
-        //hora_salida
-        //tiempo
-        //id_tarifa
-        //dinero_generado
-        //
-        boolean snr;
-        
-        snr = metodos.verificarSalidaNoRegistradaPension(telefono,fecha);
+        boolean snr;        
+        snr = metodos.verificarSalidaNoRegistradaPension(telefono);
         if (snr==true) {
-            JOptionPane.showMessageDialog(null,"El usuario no ha registrado salida");
+            JOptionPane.showMessageDialog(null,"Ya existe un ingreso pero no ha registrado salida");
         }else{
             metodos.saveMovimientosEntradaSalidaPension(fecha,hora_entrada,telefono,correo);
           //metodos.generarTicket(correo, fechaF, hora_entrada, id_tarifaDB, placa);
+          String tiempoVencimientoRestante= metodos.calcularTiempoRestanteParaPlan(telefono,fecha,hora_entrada);
+          /*longArray=metodos.calcularTiempoRestanteParaPlann2(telefono,fecha,hora_entrada);
+          long d,h,m,s;
+            //for (int i = 0; i < longArray.length; i++) {
+                d=longArray[0];
+                h=longArray[1];
+                m=longArray[2];
+                s=longArray[3];*/
+                
+            //}
+          JOptionPane.showMessageDialog(null,tiempoVencimientoRestante);
         }
         
             
@@ -301,7 +306,19 @@ Metodos metodos = new Metodos();
 
     private void btnRegSalidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegSalidaActionPerformed
         // TODO add your handling code here:
-        //UPDATE movimientos_pension set hora_salida='11:59:00',tiempo='dia: 0 hora: 12 minuto 0' WHERE telefono='2225790336' AND fecha='2022-02-06'
+        
+        
+        LocalDate todaysDate = LocalDate.now();
+        String fecha = todaysDate.toString();
+        String horaF = labelReloj.getText();
+        String telefono = txtId.getText();
+        
+         
+        metodos.registrarSalidaPension(fecha,horaF,telefono);
+        
+        
+        //UPDATE movimientos_pension set hora_salida='11:59:00',tiempo='dia: 0 hora: 12 minuto 0' WHERE telefono='2225790336' AND hora_salida='00:00:00'
+        
     }//GEN-LAST:event_btnRegSalidaActionPerformed
 
     /**

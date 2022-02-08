@@ -22,6 +22,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -60,6 +62,29 @@ Funciones f = new Funciones();
         cuadro = this.getSize();
 
         this.setLocation(((pantalla.width - cuadro.width) / 2),(pantalla.height - cuadro.height) / 2);
+        
+        /**
+         * *********************************************************************************************
+         */
+        DateTimeFormatter formateador = DateTimeFormatter.ofPattern("HH:mm:ss");
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    try {
+                        Thread.sleep(500);
+                        labelReloj.setText(formateador.format(LocalDateTime.now()));
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+        Thread hilo = new Thread(runnable);
+        hilo.start();
+        /**
+         * **************************************************************************************************
+         */
         
         /***********************************************************************/
         Map<Integer, String> datos = metodos.getPlan();
@@ -147,13 +172,13 @@ Funciones f = new Funciones();
         tablaInfoPlanes = new javax.swing.JTable();
         jLabel16 = new javax.swing.JLabel();
         txtFechaInicio = new com.toedter.calendar.JDateChooser();
-        jCheckBox1 = new javax.swing.JCheckBox();
         jLabel14 = new javax.swing.JLabel();
         labelPagar = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
         labelFechaInicio = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
         labelFechaVencimiento = new javax.swing.JLabel();
+        labelReloj = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -347,9 +372,6 @@ Funciones f = new Funciones();
         txtFechaInicio.setFocusable(false);
         txtFechaInicio.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
 
-        jCheckBox1.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
-        jCheckBox1.setText("Pagó");
-
         jLabel14.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         jLabel14.setText("Total a pagar");
 
@@ -367,6 +389,9 @@ Funciones f = new Funciones();
 
         labelFechaVencimiento.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         labelFechaVencimiento.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        labelReloj.setFont(new java.awt.Font("Century Gothic", 0, 36)); // NOI18N
+        labelReloj.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         javax.swing.GroupLayout dashboardLayout = new javax.swing.GroupLayout(dashboard);
         dashboard.setLayout(dashboardLayout);
@@ -406,24 +431,25 @@ Funciones f = new Funciones();
                             .addGroup(dashboardLayout.createSequentialGroup()
                                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dashboardLayout.createSequentialGroup()
-                                        .addComponent(jLabel14)
-                                        .addGap(231, 231, 231))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dashboardLayout.createSequentialGroup()
-                                        .addComponent(labelPagar, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(154, 154, 154))))
+                                .addComponent(labelReloj, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(198, 198, 198))
                             .addGroup(dashboardLayout.createSequentialGroup()
                                 .addComponent(comboPlan, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(111, 111, 111)
+                                .addGap(110, 110, 110)
                                 .addGroup(dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel19)
-                                    .addComponent(jLabel18))
+                                    .addComponent(jLabel18)
+                                    .addComponent(jLabel14))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(labelFechaInicio, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
-                                    .addComponent(labelFechaVencimiento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGap(154, 154, 154))))
+                                    .addGroup(dashboardLayout.createSequentialGroup()
+                                        .addGroup(dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(labelFechaInicio, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
+                                            .addComponent(labelFechaVencimiento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addGap(155, 155, 155))
+                                    .addGroup(dashboardLayout.createSequentialGroup()
+                                        .addComponent(labelPagar, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(0, 0, Short.MAX_VALUE))))))
                     .addGroup(dashboardLayout.createSequentialGroup()
                         .addGroup(dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -433,8 +459,7 @@ Funciones f = new Funciones();
                             .addGroup(dashboardLayout.createSequentialGroup()
                                 .addGroup(dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtFechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jCheckBox1))
+                                    .addComponent(txtFechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(331, 331, 331))
                             .addGroup(dashboardLayout.createSequentialGroup()
                                 .addGap(211, 211, 211)
@@ -476,42 +501,49 @@ Funciones f = new Funciones();
                         .addComponent(jLabel17))
                     .addGroup(dashboardLayout.createSequentialGroup()
                         .addGap(11, 11, 11)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(dashboardLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(labelReloj, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGroup(dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(dashboardLayout.createSequentialGroup()
-                        .addGap(13, 13, 13)
-                        .addComponent(jLabel13)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel4)
-                        .addGap(18, 18, 18))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dashboardLayout.createSequentialGroup()
-                        .addGap(11, 11, 11)
-                        .addComponent(comboPlan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(dashboardLayout.createSequentialGroup()
+                                .addGap(13, 13, 13)
+                                .addComponent(jLabel13)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel4)
+                                .addGap(18, 18, 18))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dashboardLayout.createSequentialGroup()
+                                .addGap(11, 11, 11)
+                                .addComponent(comboPlan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtFechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(8, 8, 8)))
+                        .addGroup(dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel15)
+                            .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
+                        .addComponent(btnRegistrar)
+                        .addGap(26, 26, 26))
+                    .addGroup(dashboardLayout.createSequentialGroup()
+                        .addGroup(dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(dashboardLayout.createSequentialGroup()
+                                .addGap(11, 11, 11)
+                                .addComponent(labelPagar, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(11, 11, 11))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dashboardLayout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel14)
+                                .addGap(35, 35, 35)))
+                        .addGroup(dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel18)
+                            .addComponent(labelFechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtFechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(8, 8, 8)))
-                .addGroup(dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel15)
-                    .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jCheckBox1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
-                .addComponent(btnRegistrar)
-                .addGap(26, 26, 26))
-            .addGroup(dashboardLayout.createSequentialGroup()
-                .addGap(252, 252, 252)
-                .addComponent(jLabel14)
-                .addGap(18, 18, 18)
-                .addComponent(labelPagar, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(11, 11, 11)
-                .addGroup(dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel18)
-                    .addComponent(labelFechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel19)
-                    .addComponent(labelFechaVencimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel19)
+                            .addComponent(labelFechaVencimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         getContentPane().add(dashboard, java.awt.BorderLayout.CENTER);
@@ -618,25 +650,37 @@ Funciones f = new Funciones();
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
         // TODO add your handling code here:
         String telefono,nombre,apellidop,apellidom,direccion,dia_inicio,identificacion;
-        boolean pagado;
+        boolean activo;
         int cantidad_plan=0,id_plan=0;
+        Double importe_pagado =0.0;
         
         telefono = txtTelefono.getText();
         nombre = txtNombre.getText();
-        String employeeName = nombre;
+        String employeeName = Metodos.correoEmpleado;
         apellidop=txtAp.getText();
         apellidom = txtAm.getText();
         direccion = txtDireccion.getText();
         dia_inicio = f.getFecha(txtFechaInicio);
         identificacion= nombreArchivoFromFileChooser;
-        if (jCheckBox1.isSelected()) {
-            pagado = true;
-        }else{pagado = false;}
+        String hora_inicio = labelReloj.getText();
+        importe_pagado = Double.parseDouble(labelPagar.getText());
+        
+            activo = true;
+        
         
         cantidad_plan = Integer.parseInt(txtCantidad.getText());
         id_plan = comboPlan.getSelectedIndex()+1;
+        
+        int is_activo=metodos.verificarPlanActivo(telefono);
+        if (is_activo==1) {
+            JOptionPane.showMessageDialog(null,"El usuario tiene un plan activo");
+        }else{
+            metodos.insertPension(telefono, nombre, apellidop, apellidom, direccion, identificacion, id_plan, dia_inicio, hora_inicio, cantidad_plan, activo,importe_pagado);
+            metodos.createTicketPension(telefono,employeeName);
+            
+        }
          
-        metodos.insertPension(telefono,nombre,apellidop,apellidom,direccion,identificacion,id_plan,dia_inicio,cantidad_plan,pagado);
+        
         //metodos.createTicketPension(employeeName,dia_inicio,id_plan);
         
         
@@ -741,7 +785,6 @@ Funciones f = new Funciones();
     private javax.swing.JPanel dashboard;
     private javax.swing.JPanel header;
     private javax.swing.JPanel iconMaxClose;
-    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -767,6 +810,7 @@ Funciones f = new Funciones();
     private javax.swing.JLabel labelFechaInicio;
     private javax.swing.JLabel labelFechaVencimiento;
     private javax.swing.JLabel labelPagar;
+    private javax.swing.JLabel labelReloj;
     private javax.swing.JTable tablaInfoPlanes;
     private javax.swing.JTextField txtAm;
     private javax.swing.JTextField txtAp;

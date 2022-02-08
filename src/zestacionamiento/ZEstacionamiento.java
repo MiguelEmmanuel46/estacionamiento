@@ -5,6 +5,7 @@
  */
 package zestacionamiento;
 
+import componentes.Metodos;
 import vistas.Login;
 
 /**
@@ -20,6 +21,9 @@ public class ZEstacionamiento {
         // TODO code application logic here
         Login o = new Login();
         o.setVisible(true);
+        
+        /*Metodos p = new Metodos();
+        p.createTicketPension("2225790342",Metodos.correoEmpleado);*/
     }
     
 }

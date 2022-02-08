@@ -546,9 +546,15 @@ Metodos metodos = new Metodos();
 
     private void jLabel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel9MouseClicked
         // TODO add your handling code here:
-        ConfiguracionCaja ccja = new ConfiguracionCaja();
-        this.dispose();
-        ccja.setVisible(true);
+        
+        if (Metodos.tipoEmpleado.equals("Administrador")) {
+            ConfiguracionCaja ccja = new ConfiguracionCaja();
+            this.dispose();
+            ccja.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(null, "No eres administrador");
+        }
+
     }//GEN-LAST:event_jLabel9MouseClicked
 
     private void jLabel18MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel18MouseEntered
@@ -608,9 +614,14 @@ Metodos metodos = new Metodos();
 
     private void jLabel20MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel20MouseClicked
         // TODO add your handling code here:
-        EditarTarifas et = new EditarTarifas();
-        et.setVisible(true);
-        this.dispose();
+        if (Metodos.tipoEmpleado.equals("Administrador")) {
+            EditarTarifas et = new EditarTarifas();
+            et.setVisible(true);
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(null, "No eres administrador");
+        }
+
     }//GEN-LAST:event_jLabel20MouseClicked
 
     private void jLabel21MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel21MouseClicked

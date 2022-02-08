@@ -5,15 +5,25 @@
  */
 package vistas;
 
+import componentes.Conexion;
 import componentes.Metodos;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.JTable;
 import javax.swing.UIManager;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.text.View;
 
 /**
  *
@@ -40,6 +50,13 @@ Metodos metodos = new Metodos();
 
         this.setLocation(((pantalla.width - cuadro.width) / 2),
                 (pantalla.height - cuadro.height) / 2);
+        
+/***********************************************************************************************************************************************************************************/
+        jTable1.setModel(metodos.ediTarifas(jTable1));
+        tablaPlanes.setModel(metodos.ediTarifasPlan(tablaPlanes));
+
+/**************************************************************************************************************************************************************************************/
+
     }
 
     /**
@@ -61,6 +78,14 @@ Metodos metodos = new Metodos();
         jLabel3 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         dashboard = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jLabel4 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
+        jLabel5 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tablaPlanes = new javax.swing.JTable();
+        jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -131,15 +156,102 @@ Metodos metodos = new Metodos();
 
         dashboard.setBackground(new java.awt.Color(144, 203, 249));
 
+        jTable1.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jTable1MouseEntered(evt);
+            }
+        });
+        jTable1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTable1KeyReleased(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jTable1);
+
+        jLabel4.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
+        jLabel4.setText("Editar tarifas entrada y salida de vehiculos");
+
+        jLabel5.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
+        jLabel5.setText("Editar tarifas de los planes semanales o mensuales");
+
+        tablaPlanes.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        tablaPlanes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                tablaPlanesMouseEntered(evt);
+            }
+        });
+        tablaPlanes.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tablaPlanesKeyReleased(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tablaPlanes);
+
+        jLabel6.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        jLabel6.setText("Para saber como hacer cambios da clic derecho sobre una celda");
+
         javax.swing.GroupLayout dashboardLayout = new javax.swing.GroupLayout(dashboard);
         dashboard.setLayout(dashboardLayout);
         dashboardLayout.setHorizontalGroup(
             dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 665, Short.MAX_VALUE)
+            .addGroup(dashboardLayout.createSequentialGroup()
+                .addGroup(dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(dashboardLayout.createSequentialGroup()
+                        .addGap(273, 273, 273)
+                        .addComponent(jLabel4)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(dashboardLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1)
+                            .addComponent(jSeparator1))))
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dashboardLayout.createSequentialGroup()
+                .addGap(0, 245, Short.MAX_VALUE)
+                .addGroup(dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(234, 234, 234))
         );
         dashboardLayout.setVerticalGroup(
             dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 523, Short.MAX_VALUE)
+            .addGroup(dashboardLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jLabel4)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel6)
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         getContentPane().add(dashboard, java.awt.BorderLayout.CENTER);
@@ -197,6 +309,67 @@ Metodos metodos = new Metodos();
         o.setVisible(true);
     }//GEN-LAST:event_jLabel2MouseClicked
 
+    private void jTable1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTable1KeyReleased
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER){
+            try {
+                PreparedStatement stmnt = null;
+                
+                String id_tarifa = jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString();
+                //String tipo_vehiculo = jTable1.getValueAt(jTable1.getSelectedRow(), 1).toString();
+                //String tipo_tarifa = jTable1.getValueAt(jTable1.getSelectedRow(), 2).toString();
+                String tarifa = jTable1.getValueAt(jTable1.getSelectedRow(), 3).toString();
+                //String SQL = "UPDATE listado personas SET documento="" + doc + "',nombre="+ nom + "", apellido="" + ape + "!,telefono="" + tel + "" WHERE id ="" + ¿d+ ";
+                 stmnt = Conexion.conectar().prepareStatement("UPDATE tarifas set tarifa="+tarifa+" WHERE id_tarifa="+id_tarifa+"");
+                 stmnt.executeUpdate();
+            JOptionPane.showMessageDialog(null,"¡Registro Actualizado con Éxito!");
+
+            } catch (SQLException ex) {
+            Logger.getLogger(EditarTarifas.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_jTable1KeyReleased
+
+    private void jTable1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseEntered
+        // TODO add your handling code here:
+        JPopupMenu popo = new JPopupMenu();
+        popo.add("Solo se puede editar el precio de la tarifa");
+        popo.add("Solo se aceptan valores con doble cero, ejemplo 15.00, 12.50, 25.00");
+        popo.add("Debes oprimir la tecla Enter para que se realize el cambio");
+        jTable1.setComponentPopupMenu(popo);
+        
+    }//GEN-LAST:event_jTable1MouseEntered
+
+    private void tablaPlanesKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tablaPlanesKeyReleased
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            try {
+                PreparedStatement stmnt = null;
+
+                String id_plan = tablaPlanes.getValueAt(tablaPlanes.getSelectedRow(), 0).toString();
+                //String tipo_vehiculo = jTable1.getValueAt(jTable1.getSelectedRow(), 1).toString();
+                //String tipo_tarifa = jTable1.getValueAt(jTable1.getSelectedRow(), 2).toString();
+                String precio = tablaPlanes.getValueAt(tablaPlanes.getSelectedRow(), 3).toString();
+                //String SQL = "UPDATE listado personas SET documento="" + doc + "',nombre="+ nom + "", apellido="" + ape + "!,telefono="" + tel + "" WHERE id ="" + ¿d+ ";
+                stmnt = Conexion.conectar().prepareStatement("UPDATE plan set precio=" + precio + " WHERE id_plan=" + id_plan + "");
+                stmnt.executeUpdate();
+                JOptionPane.showMessageDialog(null, "¡Registro Actualizado con Éxito!");
+
+            } catch (SQLException ex) {
+                Logger.getLogger(EditarTarifas.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_tablaPlanesKeyReleased
+
+    private void tablaPlanesMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaPlanesMouseEntered
+        // TODO add your handling code here:
+        JPopupMenu popo = new JPopupMenu();
+        popo.add("Solo se puede editar el precio de la tarifa");
+        popo.add("Solo se aceptan valores con doble cero, ejemplo 15.00, 12.50, 250.00");
+        popo.add("Debes oprimir la tecla Enter para que se realize el cambio");
+       tablaPlanes.setComponentPopupMenu(popo);
+    }//GEN-LAST:event_tablaPlanesMouseEntered
+
     /**
      * @param args the command line arguments
      */
@@ -249,6 +422,14 @@ Metodos metodos = new Metodos();
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tablaPlanes;
     // End of variables declaration//GEN-END:variables
 }
