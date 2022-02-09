@@ -27,7 +27,8 @@ Metodos o = new Metodos();
     public Login() {
         initComponents();
         try{
-            setIconImage(new ImageIcon(getClass().getResource ("../multimedia/iconoApp.png")).getImage());
+            //this.setIconImage(new ImageIcon(getClass().getResource ("../multimedia/iconoApp.png")).getImage());
+             setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/multimedia/iconoApp.png")));
         }catch(Exception ex){JOptionPane.showMessageDialog(null,"wdwd"+ex);}
         this.setResizable(false);
 

@@ -36,7 +36,7 @@ int id_tarifaDB =0;
        
         initComponents();
         try{
-            setIconImage(new ImageIcon(getClass().getResource ("../multimedia/iconoApp.png")).getImage());
+            setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/multimedia/iconoApp.png")));
         }catch(Exception ex){JOptionPane.showMessageDialog(null,"wdwd"+ex);}
                 Map<Integer, String> datos = metodos.getRate();
         datos.forEach((k,v) -> vESListaVehiculo.addItem(v));
@@ -437,7 +437,7 @@ int id_tarifaDB =0;
             txtPlaca.setText("");
         }
 
-        metodos.generarTicket(correo,fechaF,hora_entrada,id_tarifaDB,placa);
+        //metodos.generarTicket(correo,fechaF,hora_entrada,id_tarifaDB,placa);
 
     }//GEN-LAST:event_jButton1ActionPerformed
 

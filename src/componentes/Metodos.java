@@ -1297,9 +1297,13 @@ public class Metodos
         //telefono,nombre,apellidop,apellidom,direccion,identificacion id_plan,dia_inicio,dia_vencimiento,cantidad_plan,pagado
         PreparedStatement stmnt = null;
         String dia_vencimiento = calcularfechaV(id_plan,dia_inicio,cantidad_plan);
+        int activo=1;
+        if (pagado==true) {
+            activo=1;
+        }else{activo=0;}
         
         try {
-            stmnt = Conexion.conectar().prepareStatement("INSERT INTO pension values ('" + telefono + "','" + nombre + "','" + apellidop + "','" + apellidom + "','" + direccion + "','" + identificacion + "'," + id_plan + ",'" + dia_inicio + "','"+hora_inicio+"','" + dia_vencimiento + "','"+hora_inicio+"'," + cantidad_plan + "," + pagado + ","+importe_pagado+")");
+            stmnt = Conexion.conectar().prepareStatement("INSERT INTO pension values ('" + telefono + "','" + nombre + "','" + apellidop + "','" + apellidom + "','" + direccion + "','" + identificacion + "'," + id_plan + ",'" + dia_inicio + "','"+hora_inicio+"','" + dia_vencimiento + "','"+hora_inicio+"'," + cantidad_plan + "," + activo + ","+importe_pagado+")");
             stmnt.executeUpdate();
             JOptionPane.showMessageDialog(null, "Cliente para plan " + nombre + " " + apellidop + " " + apellidom + "ingresado correctamente a la base de datos");
         } catch (SQLException ex) {
@@ -1412,7 +1416,7 @@ public class Metodos
 
         //SELECT SUM(monto) as monto_egresos from movimientos_caja WHERE tipo='Ingreso'
         try {
-            stmnt = Conexion.conectar().prepareStatement("select activo from pension WHERE telefono='"+telefono+"'");
+            stmnt = Conexion.conectar().prepareStatement("select pagado from pension WHERE telefono='"+telefono+"'");
             rs = stmnt.executeQuery();
             while (rs.next()) {
                 activo= rs.getInt("activo");

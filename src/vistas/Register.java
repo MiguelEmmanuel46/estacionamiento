@@ -24,7 +24,7 @@ Metodos im = new Metodos();
     public Register() {
         initComponents();
         try{
-            setIconImage(new ImageIcon(getClass().getResource ("../multimedia/iconoApp.png")).getImage());
+            setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/multimedia/iconoApp.png")));
         }catch(Exception ex){JOptionPane.showMessageDialog(null,"wdwd"+ex);}
         setTitle("Registro");
         this.setResizable(false);

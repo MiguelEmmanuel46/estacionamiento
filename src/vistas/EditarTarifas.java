@@ -38,7 +38,7 @@ Metodos metodos = new Metodos();
        
         initComponents();
         try{
-            setIconImage(new ImageIcon(getClass().getResource ("../multimedia/iconoApp.png")).getImage());
+            setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/multimedia/iconoApp.png")));
         }catch(Exception ex){JOptionPane.showMessageDialog(null,"wdwd"+ex);}
             //NO PERMITO QUE PUEDAN CAMBIAR EL TAMAÑO DE LA VENTANA
         this.setResizable(false);
