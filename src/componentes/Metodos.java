@@ -295,10 +295,10 @@ public class Metodos
 
                 if (correoDB.equals(correouser2)) {
                     usuarioExistente = true;
-                    System.out.println("Correo matched CorreoDB=" + correoDB + " " + " CorreoUSer=" + correouser2);
+                    //System.out.println("Correo matched CorreoDB=" + correoDB + " " + " CorreoUSer=" + correouser2);
                 } else {
                     usuarioExistente = false;
-                    System.out.println("Cooreo no matched CorreoDB=" + correoDB + " " + " CorreoUSer=" + correouser2);
+                    //System.out.println("Cooreo no matched CorreoDB=" + correoDB + " " + " CorreoUSer=" + correouser2);
                     JOptionPane.showMessageDialog(null, "Correo no registrado");
                 }
 
@@ -827,7 +827,7 @@ public class Metodos
             rs = stmnt.executeQuery();
             while (rs.next()) {
                 userType = rs.getString("area");
-                System.out.println("flag from metodo"+userType);
+               // System.out.println("flag from metodo"+userType);
             }
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Error:" + e);
@@ -1150,18 +1150,7 @@ public class Metodos
         }
 
         Conexion.cierraConexion();
-        /*System.out.println(telefono + "\n");
-        System.out.println("\n"+nombre_completo);
-        System.out.println("\n"+dia_inicio);
-        System.out.println("\n"+hora_inicio);
-        System.out.println("\n" + dia_vencimiento);
-        System.out.println("\n"+hora_vencimiento  );
-        System.out.println("\n"+tipo_plan );
-        System.out.println("\n"+precio);
-        System.out.println("\n"+cantidad_plan);
-        System.out.println("\n"+importe_pagado);
-        *///System.out.println("\n"+employeeName);
-        //System.out.println(timestamp);
+
          Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         String lop = timestamp.toString();
         String result = lop.replaceAll("\\p{Punct}", "");
@@ -1440,7 +1429,7 @@ public class Metodos
             rs = stmnt.executeQuery();
             while (rs.next()) {
                 fechaV = rs.getString("fecha_v");
-                System.out.println("FLAG FROM selectFechaVencimientoPlan "+fechaV);
+               // System.out.println("FLAG FROM selectFechaVencimientoPlan "+fechaV);
             }
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Error:" + e);
@@ -1477,7 +1466,7 @@ public class Metodos
     //id_movimiento,fecha,hora_entrada,hora_salida,tiempo,telefono,correo
         PreparedStatement stmnt = null;
         try {
-            stmnt = Conexion.conectar().prepareStatement("insert into movimientos_pension values(0,'"+fecha+"','"+hora_entrada+"','0000-00-00','00:00:00','sc','"+telefono+"','"+correo+"')");
+            stmnt = Conexion.conectar().prepareStatement("insert into movimientos_pension values(0,'"+fecha+"','"+hora_entrada+"','00:00:00','sc','"+telefono+"','"+correo+"')");
             stmnt.executeUpdate();
             JOptionPane.showMessageDialog(null, "Usuario registrado correctamente en la base de datos");
         } catch (SQLException ex) {
@@ -1807,6 +1796,185 @@ public class Metodos
         }
     }
     
-    
+
+     
+     
+     public DefaultTableModel entradasSalidasPension(JTable tabla, String fecha1, String fecha2) {
+        PreparedStatement stmnt = null, stmnt2 = null;
+        ResultSet rs = null, rs2 = null;
+        DefaultTableModel model = new DefaultTableModel();
+
+        model.addColumn("Telefono");
+        model.addColumn("Nombre completo");
+        model.addColumn("Direccion");
+        model.addColumn("Identificacion");
+        model.addColumn("Tipo de plan");
+        model.addColumn("Precio");
+        model.addColumn("Cantidad");
+        model.addColumn("Dia de inicio");
+        model.addColumn("Dia de vencimiento");
+        model.addColumn("Importe pagado");
+        model.addColumn("Activo");
+
+
+        /*try {
+         stmnt = Conexion.conectar().prepareStatement("select COLUMN_NAME from INFORMATION_SCHEMA.COLUMNS where TABLE_NAME = 'plan'");
+         rs = stmnt.executeQuery();
+         while (rs.next()) {
+         //model.addRow(new Object[]{rs.getString("tipo_plan"), rs.getInt("duracion"), rs.getDouble("precio")});
+         model.addColumn(rs.getString("COLUMN_NAME"));
+         }
+         } catch (SQLException ex) {
+         JOptionPane.showMessageDialog(null, "Error:" + ex);
+         }*/
+        try {
+            stmnt2 = Conexion.conectar().prepareStatement("SELECT pension.telefono,CONCAT(pension.nombre,' ',pension.apellidop,' ',pension.apellidom) as nombre_completo,pension.direccion,pension.identificacion,plan.tipo_plan,plan.precio,pension.cantidad_plan,CONCAT(pension.dia_inicio,' ',pension.hora_inicio) as di,CONCAT(pension.dia_vencimiento,' ',pension.hora_vencimiento) as df,pension.importe_pagado,pension.pagado FROM pension JOIN plan ON pension.id_plan=plan.id_plan WHERE pension.dia_inicio BETWEEN '"+fecha1+"' AND '"+fecha2+"'");
+            rs2 = stmnt2.executeQuery();
+            while (rs2.next()) {
+                //model.addRow(new Object[]{rs.getString("tipo_plan"), rs.getInt("duracion"), rs.getDouble("precio")});
+
+                model.addRow(new Object[]{rs2.getString("pension.telefono"), rs2.getString("nombre_completo"),rs2.getString("pension.direccion"),rs2.getString("pension.identificacion"),rs2.getString("plan.tipo_plan"),rs2.getString("plan.precio"),rs2.getString("pension.cantidad_plan"),rs2.getString("di"),rs2.getString("df"),rs2.getDouble("pension.importe_pagado"),rs2.getInt("pension.pagado")});
+                //model.addRow(new Object[]{"e","s","t","a","e","s","u","n","a","tr","y"});
+            }
+        } catch (SQLException ex) {
+        }
+        Conexion.cierraConexion();
+
+        return model;
+    }
+
+    public String reporteEntradaSalidaPension(String fecha1, String fecha2) {
+        Date fecha = new Date();
+        String nombreArchivoCreado = null;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-hh-mm-ss");
+        String Fecha55 = sdf.format(fecha);
+
+        Workbook book = new XSSFWorkbook();
+        Sheet sheet = book.createSheet("Reporte");
+
+        try {
+            InputStream is = new FileInputStream("C:\\Multimedia\\iconoApp.png");
+            byte[] bytes = IOUtils.toByteArray(is);
+            int imgIndex = book.addPicture(bytes, Workbook.PICTURE_TYPE_JPEG);
+            is.close();
+
+            CreationHelper help = book.getCreationHelper();
+            Drawing draw = sheet.createDrawingPatriarch();
+
+            ClientAnchor anchor = help.createClientAnchor();
+            anchor.setCol1(0);
+            anchor.setRow1(0);
+            Picture pict = draw.createPicture(anchor, imgIndex);
+            pict.resize(2, 4);
+
+            CellStyle tituloEstilo = book.createCellStyle();
+            tituloEstilo.setAlignment(HorizontalAlignment.CENTER);
+            tituloEstilo.setVerticalAlignment(VerticalAlignment.CENTER);
+            Font fuenteTitulo = book.createFont();
+            fuenteTitulo.setFontName("Arial");
+            fuenteTitulo.setBold(true);
+            fuenteTitulo.setFontHeightInPoints((short) 14);
+            tituloEstilo.setFont(fuenteTitulo);
+
+            Row filaTitulo = sheet.createRow(1);
+            Cell celdaTitulo = filaTitulo.createCell(1);
+            celdaTitulo.setCellStyle(tituloEstilo);
+            celdaTitulo.setCellValue("Reporte entradas y salidas");
+
+            sheet.addMergedRegion(new CellRangeAddress(1, 2, 1, 3));
+            String[] cabecera = {"Telefono","Nombre completo","Direccion","Identificacion","Tipo de plan","Precio","Cantidad","Dia de inicio","Dia de vencimiento","Importe pagado","Activo"};
+
+            CellStyle headerStyle = book.createCellStyle();
+            /**
+             * ***************************************************************
+             */
+            HSSFWorkbook hwb = new HSSFWorkbook();
+            HSSFPalette palette = hwb.getCustomPalette();
+            // get the color which most closely matches the color you want to use
+            HSSFColor myColor = palette.findSimilarColor(155, 0, 0);
+            // get the palette index of that color 
+            short palIndex = myColor.getIndex();
+            /**
+             * ****************************************************************
+             */
+            headerStyle.setFillForegroundColor(palIndex);
+            headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+            headerStyle.setBorderBottom(BorderStyle.THIN);
+            headerStyle.setBorderLeft(BorderStyle.THIN);
+            headerStyle.setBorderRight(BorderStyle.THIN);
+            headerStyle.setBorderBottom(BorderStyle.THIN);
+
+            Font font = book.createFont();
+            font.setFontName("Arial");
+            font.setBold(true);
+            font.setColor(IndexedColors.WHITE.getIndex());
+            font.setFontHeightInPoints((short) 12);
+            headerStyle.setFont(font);
+
+            Row filaEncabezados = sheet.createRow(4);
+
+            for (int i = 0; i < cabecera.length; i++) {
+                Cell celdaEnzabezado = filaEncabezados.createCell(i);
+                celdaEnzabezado.setCellStyle(headerStyle);
+                celdaEnzabezado.setCellValue(cabecera[i]);
+            }
+
+            Conexion con = new Conexion();
+            PreparedStatement ps;
+            ResultSet rs;
+
+            //Connection conn = (Connection) con.conectar();
+            int numFilaDatos = 5;
+
+            CellStyle datosEstilo = book.createCellStyle();
+            datosEstilo.setBorderBottom(BorderStyle.THIN);
+            datosEstilo.setBorderLeft(BorderStyle.THIN);
+            datosEstilo.setBorderRight(BorderStyle.THIN);
+            datosEstilo.setBorderBottom(BorderStyle.THIN);
+
+            ps = Conexion.conectar().prepareStatement("SELECT pension.telefono,CONCAT(pension.nombre,' ',pension.apellidop,' ',pension.apellidom) as nombre_completo,pension.direccion,pension.identificacion,plan.tipo_plan,plan.precio,pension.cantidad_plan,CONCAT(pension.dia_inicio,' ',pension.hora_inicio) as di,CONCAT(pension.dia_vencimiento,' ',pension.hora_vencimiento) as df,pension.importe_pagado,pension.pagado FROM pension JOIN plan ON pension.id_plan=plan.id_plan WHERE pension.dia_inicio BETWEEN '"+fecha1+"' AND '"+fecha2+"'");
+            rs = ps.executeQuery();
+
+            int numCol = rs.getMetaData().getColumnCount();
+
+            while (rs.next()) {
+                Row filaDatos = sheet.createRow(numFilaDatos);
+
+                for (int a = 0; a < numCol; a++) {
+
+                    Cell CeldaDatos = filaDatos.createCell(a);
+                    CeldaDatos.setCellStyle(datosEstilo);
+                    CeldaDatos.setCellValue(rs.getString(a + 1));
+                }
+
+                //Cell celdaImporte = filaDatos.createCell(4);
+                //celdaImporte.setCellStyle(datosEstilo);
+                //celdaImporte.setCellFormula(String.format("C%d+D%d", numFilaDatos + 1, numFilaDatos + 1));
+                numFilaDatos++;
+
+            }
+
+            for (int i = 0; i < numCol; i++) {
+                sheet.autoSizeColumn(i);
+            }
+            sheet.setZoom(100);
+
+            FileOutputStream fileOut = new FileOutputStream("C:\\FilesExportExcel\\" + Fecha55 + "ReporteEntradasYSalidasUCP.xlsx");
+            nombreArchivoCreado = "C:\\FilesExportExcel\\" + Fecha55 + "ReporteEntradasYSalidasUCP.xlsx";
+            book.write(fileOut);
+            fileOut.close();
+            JOptionPane.showMessageDialog(null, "Exportado");
+
+        } catch (FileNotFoundException ex) {
+            System.out.println("" + ex);
+        } catch (IOException ex) {
+            System.out.println("" + ex);
+        } catch (SQLException ex) {
+            System.out.println("" + ex);
+        }
+        //Vistas.Filtrar.jButton2.setText(nombreArchivoCreado);
+        return nombreArchivoCreado;
+    }
+
 
 }
