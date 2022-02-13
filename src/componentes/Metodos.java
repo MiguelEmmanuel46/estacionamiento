@@ -490,7 +490,7 @@ public class Metodos
         //double tarifa = 0;
         try {
             //stmnt = Conexion.conectar().prepareStatement("SELECT tarifas.id_tarifa,tarifas.tipo_vehiculo,tarifas.tipo_tarifa,tarifas.tarifa FROM movimientos NATURAL JOIN tarifas WHERE movimientos.id_movimiento="+id_movimiento+" AND movimientos.id_tarifa=tarifas.id_tarifa");
-            stmnt = Conexion.conectar().prepareStatement("SELECT tarifas.tipo_vehiculo FROM movimientos NATURAL JOIN tarifas WHERE movimientos.id_movimiento="+id_movimiento+" AND movimientos.id_tarifa=tarifas.id_tarifa");
+            stmnt = Conexion.conectar().prepareStatement("SELECT tarifas.tipo_vehiculo FROM movimientos NATURAL JOIN tarifas WHERE  movimientos.id_tarifa=tarifas.id_tarifa AND movimientos.id_movimiento="+id_movimiento+" ");
             rs = stmnt.executeQuery();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error:" + ex);
@@ -589,6 +589,7 @@ public class Metodos
             tarifaACobrarXDIA = changeRateByDays(placas);
             tpd = dias * tarifaACobrarXDIA;
              msg1 = "dias: "+dias+" x "+tarifaACobrarXDIA+"= "+tpd+"\n";
+             System.out.println(tarifaACobrarXDIA+" tcpd\n");
         }else{tpd=0.0;}
         if (horas >= 1) {
             tph = horas * tarifaACobrar;
@@ -608,16 +609,16 @@ public class Metodos
         mensajes[3] = tiempo;
         mensajes[4] = msg4;
         
-        updateMovimientos(fechaF,placas,horaF,tiempo,tarifaFinal);
+        updateMovimientos(id_movimiento,placas,horaF,tiempo,tarifaFinal);
         
         return mensajes;
     }
     
     
-    public void updateMovimientos(String fecha,String placa,String hora_salida ,String tiempo,Double dinero_generado){
+    public void updateMovimientos(int id_movimiento,String placa,String hora_salida ,String tiempo,Double dinero_generado){
         
         try {
-            PreparedStatement stmt = Conexion.conectar().prepareStatement("UPDATE movimientos set hora_salida='"+hora_salida+"',tiempo='"+tiempo+"',dinero_generado="+dinero_generado+" WHERE placas='"+placa+"' AND fecha='"+fecha+"'");
+            PreparedStatement stmt = Conexion.conectar().prepareStatement("UPDATE movimientos set hora_salida='"+hora_salida+"',tiempo='"+tiempo+"',dinero_generado="+dinero_generado+" WHERE id_movimiento="+id_movimiento+"");
             stmt.executeUpdate();
             JOptionPane.showMessageDialog(null, "Salida registrada correctamente");
 
@@ -1466,7 +1467,7 @@ public class Metodos
     //id_movimiento,fecha,hora_entrada,hora_salida,tiempo,telefono,correo
         PreparedStatement stmnt = null;
         try {
-            stmnt = Conexion.conectar().prepareStatement("insert into movimientos_pension values(0,'"+fecha+"','"+hora_entrada+"','00:00:00','sc','"+telefono+"','"+correo+"')");
+            stmnt = Conexion.conectar().prepareStatement("insert into movimientos_pension values(0,'"+fecha+"','"+hora_entrada+"','0000-00-00','00:00:00','sc','"+telefono+"','"+correo+"')");
             stmnt.executeUpdate();
             JOptionPane.showMessageDialog(null, "Usuario registrado correctamente en la base de datos");
         } catch (SQLException ex) {

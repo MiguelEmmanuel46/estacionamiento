@@ -30,11 +30,13 @@ Metodos metodos = new Metodos();
     public EntradaSalidaPlan() {
        
         initComponents();
+        
+        this.setTitle("Entradas/Salidas de usuario con plan          Usuario:"+Metodos.correoEmpleado);
         try{
             setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/multimedia/iconoApp.png")));
         }catch(Exception ex){JOptionPane.showMessageDialog(null,"wdwd"+ex);}
             //NO PERMITO QUE PUEDAN CAMBIAR EL TAMAÑO DE LA VENTANA
-        this.setResizable(false);
+        //this.setResizable(false);
 
         //AHORA LA CENTRARÉ EN LA PANTALLA
         Dimension pantalla, cuadro;
@@ -90,7 +92,6 @@ Metodos metodos = new Metodos();
         btnRegSalida = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setUndecorated(true);
 
         header.setBackground(new java.awt.Color(15, 19, 52));
         header.setPreferredSize(new java.awt.Dimension(666, 50));
@@ -158,15 +159,18 @@ Metodos metodos = new Metodos();
 
         dashboard.setBackground(new java.awt.Color(144, 203, 249));
 
-        labelReloj.setFont(new java.awt.Font("Century Gothic", 0, 36)); // NOI18N
+        labelReloj.setFont(new java.awt.Font("Century Gothic", 0, 48)); // NOI18N
+        labelReloj.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelReloj.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        txtId.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
+        txtId.setFont(new java.awt.Font("Century Gothic", 0, 36)); // NOI18N
+        txtId.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
-        jLabel4.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Century Gothic", 0, 36)); // NOI18N
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("Identificador de usuario");
 
-        btnRegEntrada.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
+        btnRegEntrada.setFont(new java.awt.Font("Century Gothic", 0, 36)); // NOI18N
         btnRegEntrada.setText("Registrar entrada");
         btnRegEntrada.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -174,7 +178,7 @@ Metodos metodos = new Metodos();
             }
         });
 
-        btnRegSalida.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
+        btnRegSalida.setFont(new java.awt.Font("Century Gothic", 0, 36)); // NOI18N
         btnRegSalida.setText("Registrar Salida");
         btnRegSalida.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -187,19 +191,17 @@ Metodos metodos = new Metodos();
         dashboardLayout.setHorizontalGroup(
             dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(dashboardLayout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addComponent(btnRegEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(labelReloj, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
-                .addComponent(btnRegSalida, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(51, 51, 51))
-            .addGroup(dashboardLayout.createSequentialGroup()
-                .addGap(225, 225, 225)
-                .addGroup(dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addContainerGap()
+                .addGroup(dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(dashboardLayout.createSequentialGroup()
+                        .addComponent(btnRegEntrada)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(labelReloj, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnRegSalida))
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtId))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         dashboardLayout.setVerticalGroup(
             dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -210,11 +212,11 @@ Metodos metodos = new Metodos();
                 .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(labelReloj, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(btnRegEntrada)
-                        .addComponent(btnRegSalida)))
-                .addContainerGap(66, Short.MAX_VALUE))
+                        .addComponent(btnRegSalida, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addComponent(labelReloj, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         getContentPane().add(dashboard, java.awt.BorderLayout.CENTER);

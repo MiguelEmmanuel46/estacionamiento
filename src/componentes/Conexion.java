@@ -26,7 +26,7 @@ public class Conexion {
     public static Connection conectar() {
         
         try {
-            String url = "jdbc:mysql://localhost:3306/estacionamiento?user=userE&password=afb1f1ac34f!W";
+            String url = "jdbc:mysql://DESKTOP-7QRQQ01:3306/estacionamiento?user=userE&password=afb1f1ac34f!W";
             con = (Connection) DriverManager.getConnection(url);
             if (con != null) {
                 
