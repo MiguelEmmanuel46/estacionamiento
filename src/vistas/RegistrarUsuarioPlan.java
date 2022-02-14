@@ -63,7 +63,7 @@ Funciones f = new Funciones();
         pantalla = Toolkit.getDefaultToolkit().getScreenSize();
         cuadro = this.getSize();
 
-        this.setLocation(((pantalla.width - cuadro.width) / 2),(pantalla.height - cuadro.height) / 2);
+        this.setLocation(((pantalla.width - cuadro.width) / 2),(pantalla.height - cuadro.height) / 50);
         
         /**
          * *********************************************************************************************
@@ -197,7 +197,6 @@ Funciones f = new Funciones();
         buttonClose.setLayout(new java.awt.BorderLayout());
 
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/delete_32px.png"))); // NOI18N
         jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel1MouseClicked(evt);
@@ -540,7 +539,7 @@ Funciones f = new Funciones();
     
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
         // TODO add your handling code here:
-        System.exit(0);
+//        System.exit(0);
     }//GEN-LAST:event_jLabel1MouseClicked
 
     private void jLabel1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseEntered

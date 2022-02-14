@@ -5,6 +5,7 @@
  */
 package vistas;
 
+import componentes.BgBorder;
 import javax.swing.JFrame;
 import componentes.Metodos;
 import java.awt.Color;
@@ -20,26 +21,24 @@ import javax.swing.JPanel;
  */
 public class Register extends javax.swing.JFrame {
 Metodos im = new Metodos();
+BgBorder fondo = new BgBorder();
     /**
      * Creates new form NewJFrame
      */
     public Register() {
+        this.setContentPane(fondo);
         initComponents();
+        
         try{
             setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/multimedia/iconoApp.png")));
         }catch(Exception ex){JOptionPane.showMessageDialog(null,"wdwd"+ex);}
-        //setTitle("Registro");
-        //this.setResizable(false);
-        this.setTitle("Registro de usuarios          Usuario:"+Metodos.nombreEmpleado);
-
-        //AHORA LA CENTRARÉ EN LA PANTALLA
         Dimension pantalla, cuadro;
         pantalla = Toolkit.getDefaultToolkit().getScreenSize();
         cuadro = this.getSize();
 
-        this.setLocation(((pantalla.width - cuadro.width) / 2),
-                (pantalla.height - cuadro.height) / 2);
+        this.setLocation(((pantalla.width - cuadro.width) / 2),(pantalla.height - cuadro.height) / 50);
     }
+    
      public void changecolor(JPanel hover, Color rand){
         hover.setBackground(rand);
     }
@@ -54,6 +53,7 @@ Metodos im = new Metodos();
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jInternalFrame2 = new javax.swing.JInternalFrame();
         jPanel2 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
@@ -77,23 +77,38 @@ Metodos im = new Metodos();
         passwordRRoot = new javax.swing.JPasswordField();
         campoArea = new javax.swing.JComboBox();
 
+        jInternalFrame2.setVisible(true);
+
+        javax.swing.GroupLayout jInternalFrame2Layout = new javax.swing.GroupLayout(jInternalFrame2.getContentPane());
+        jInternalFrame2.getContentPane().setLayout(jInternalFrame2Layout);
+        jInternalFrame2Layout.setHorizontalGroup(
+            jInternalFrame2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jInternalFrame2Layout.setVerticalGroup(
+            jInternalFrame2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
 
-        jPanel2.setBackground(new java.awt.Color(41, 170, 228));
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel2.setToolTipText("");
+        jPanel2.setOpaque(false);
 
-        jPanel4.setBackground(new java.awt.Color(243, 148, 32));
+        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel4.setOpaque(false);
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel8.setForeground(new java.awt.Color(36, 23, 8));
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel8.setText("Registro");
 
         jLabel16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/iconoAries.png"))); // NOI18N
 
-        jPanel1.setBackground(new java.awt.Color(243, 148, 32));
+        jPanel1.setBackground(new java.awt.Color(72, 128, 242));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/back_32px.png"))); // NOI18N
         jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -151,11 +166,12 @@ Metodos im = new Metodos();
                 .addContainerGap())
         );
 
-        jPanel5.setBackground(new java.awt.Color(41, 170, 228));
+        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel5.setOpaque(false);
 
-        btnRegistrar.setBackground(new java.awt.Color(34, 167, 240));
+        btnRegistrar.setBackground(new java.awt.Color(72, 128, 242));
         btnRegistrar.setFont(new java.awt.Font("Century Gothic", 0, 22)); // NOI18N
-        btnRegistrar.setForeground(new java.awt.Color(255, 255, 255));
+        btnRegistrar.setForeground(new java.awt.Color(36, 23, 8));
         btnRegistrar.setText("Registrar");
         btnRegistrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -164,44 +180,57 @@ Metodos im = new Metodos();
         });
 
         jLabel9.setFont(new java.awt.Font("Century Gothic", 0, 22)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel9.setForeground(new java.awt.Color(36, 23, 8));
         jLabel9.setText("Correo: ");
 
         correoR.setFont(new java.awt.Font("Century Gothic", 0, 22)); // NOI18N
+        correoR.setForeground(new java.awt.Color(36, 23, 8));
+        correoR.setOpaque(false);
+        correoR.setSelectionColor(new java.awt.Color(36, 23, 8));
 
         jLabel10.setFont(new java.awt.Font("Century Gothic", 0, 22)); // NOI18N
-        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel10.setForeground(new java.awt.Color(36, 23, 8));
         jLabel10.setText("Nombre(s): ");
 
         campoNombre.setFont(new java.awt.Font("Century Gothic", 0, 22)); // NOI18N
+        campoNombre.setForeground(new java.awt.Color(36, 23, 8));
+        campoNombre.setSelectionColor(new java.awt.Color(36, 23, 8));
 
         jLabel11.setFont(new java.awt.Font("Century Gothic", 0, 22)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel11.setForeground(new java.awt.Color(36, 23, 8));
         jLabel11.setText("Apellido paterno: ");
 
         campoApellidoP.setFont(new java.awt.Font("Century Gothic", 0, 22)); // NOI18N
+        campoApellidoP.setForeground(new java.awt.Color(36, 23, 8));
+        campoApellidoP.setSelectionColor(new java.awt.Color(36, 23, 8));
 
         jLabel12.setFont(new java.awt.Font("Century Gothic", 0, 22)); // NOI18N
-        jLabel12.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel12.setForeground(new java.awt.Color(36, 23, 8));
         jLabel12.setText("Apellido materno: ");
 
         campoApellidoM.setFont(new java.awt.Font("Century Gothic", 0, 22)); // NOI18N
+        campoApellidoM.setForeground(new java.awt.Color(36, 23, 8));
+        campoApellidoM.setSelectionColor(new java.awt.Color(36, 23, 8));
 
         jLabel13.setFont(new java.awt.Font("Century Gothic", 0, 22)); // NOI18N
-        jLabel13.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel13.setForeground(new java.awt.Color(36, 23, 8));
         jLabel13.setText("Password: ");
 
         passwordR.setFont(new java.awt.Font("Century Gothic", 0, 22)); // NOI18N
+        passwordR.setForeground(new java.awt.Color(36, 23, 8));
+        passwordR.setSelectionColor(new java.awt.Color(36, 23, 8));
 
         jLabel14.setFont(new java.awt.Font("Century Gothic", 0, 22)); // NOI18N
-        jLabel14.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel14.setForeground(new java.awt.Color(36, 23, 8));
         jLabel14.setText("Tipo usuario");
 
         jLabel15.setFont(new java.awt.Font("Century Gothic", 0, 22)); // NOI18N
-        jLabel15.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel15.setForeground(new java.awt.Color(36, 23, 8));
         jLabel15.setText("PasswordRoot");
 
         passwordRRoot.setFont(new java.awt.Font("Century Gothic", 0, 22)); // NOI18N
+        passwordRRoot.setForeground(new java.awt.Color(36, 23, 8));
+        passwordRRoot.setSelectionColor(new java.awt.Color(36, 23, 8));
         passwordRRoot.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 passwordRRootActionPerformed(evt);
@@ -209,6 +238,7 @@ Metodos im = new Metodos();
         });
 
         campoArea.setFont(new java.awt.Font("Century Gothic", 0, 22)); // NOI18N
+        campoArea.setForeground(new java.awt.Color(36, 23, 8));
         campoArea.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Empleado", "Administrador" }));
         campoArea.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -333,12 +363,12 @@ Metodos im = new Metodos();
 
     private void jLabel1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseEntered
         // TODO add your handling code here:
-         changecolor(jPanel1,new Color(41,170,228));
+         changecolor(jPanel1,new Color(72,128,242,80));
     }//GEN-LAST:event_jLabel1MouseEntered
 
     private void jLabel1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseExited
         // TODO add your handling code here:
-        changecolor(jPanel1,new Color(243,148,32));        
+        changecolor(jPanel1,new Color(72,128,242));        
     }//GEN-LAST:event_jLabel1MouseExited
 
     /**
@@ -414,6 +444,7 @@ Metodos im = new Metodos();
     public static javax.swing.JComboBox campoArea;
     public static javax.swing.JTextField campoNombre;
     public static javax.swing.JTextField correoR;
+    private javax.swing.JInternalFrame jInternalFrame2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

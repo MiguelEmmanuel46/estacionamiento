@@ -29,7 +29,7 @@ Metodos o = new Metodos();
         cuadro = this.getSize();
 
         this.setLocation(((pantalla.width - cuadro.width) / 2),
-                (pantalla.height - cuadro.height) / 2);
+                (pantalla.height - cuadro.height) / 50);
     }
 
     /**

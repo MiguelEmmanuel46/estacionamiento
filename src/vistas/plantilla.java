@@ -5,6 +5,7 @@
  */
 package vistas;
 
+import componentes.BgBorder;
 import componentes.Metodos;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -13,6 +14,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.UIManager;
 
 /**
@@ -21,11 +23,12 @@ import javax.swing.UIManager;
  */
 public class plantilla extends javax.swing.JFrame {
 Metodos metodos = new Metodos();
+//BgBorder fondo = new BgBorder();
     /**
      * Creates new form CajaAlternative
      */
     public plantilla() {
-       
+       //this.setContentPane(fondo);
         initComponents();
         this.setTitle("          Usuario:"+Metodos.nombreEmpleado);
         try{
@@ -40,7 +43,30 @@ Metodos metodos = new Metodos();
         cuadro = this.getSize();
 
         this.setLocation(((pantalla.width - cuadro.width) / 2),
-                (pantalla.height - cuadro.height) / 2);
+                (pantalla.height - cuadro.height) / 50);
+        
+        
+
+        // La etiqueta.
+       // JLabel etiqueta = new JLabel();
+
+        // Se carga la imagen, con path absoluto para evitar problemas y debe
+        // ser un gif.
+        //Icon imagen = new ImageIcon(
+          //      "d:/users/javier/paginas_web/chuidiang/iconos/pizarra.gif");
+
+        // Se mete la imagen en el label
+        //etiqueta.setIcon(imagen);
+
+        // Se mete el scroll en la ventana
+        //JScrollPane scroll = jScrollPane1;
+     
+        // Se mete el label en el scroll
+        
+
+        // Y se visualiza todo.
+        
+        //ventana.setVisible(true);
     }
 
     /**
@@ -64,7 +90,6 @@ Metodos metodos = new Metodos();
         dashboard = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setUndecorated(true);
 
         header.setBackground(new java.awt.Color(15, 19, 52));
         header.setPreferredSize(new java.awt.Dimension(666, 50));
@@ -79,7 +104,6 @@ Metodos metodos = new Metodos();
         buttonClose.setLayout(new java.awt.BorderLayout());
 
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/delete_32px.png"))); // NOI18N
         jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel1MouseClicked(evt);
@@ -136,11 +160,11 @@ Metodos metodos = new Metodos();
         dashboard.setLayout(dashboardLayout);
         dashboardLayout.setHorizontalGroup(
             dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 665, Short.MAX_VALUE)
+            .addGap(0, 810, Short.MAX_VALUE)
         );
         dashboardLayout.setVerticalGroup(
             dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 523, Short.MAX_VALUE)
+            .addGap(0, 386, Short.MAX_VALUE)
         );
 
         getContentPane().add(dashboard, java.awt.BorderLayout.CENTER);
@@ -168,7 +192,7 @@ Metodos metodos = new Metodos();
     
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
         // TODO add your handling code here:
-        System.exit(0);
+//        System.exit(0);
     }//GEN-LAST:event_jLabel1MouseClicked
 
     private void jLabel1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseEntered

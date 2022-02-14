@@ -5,6 +5,7 @@
  */
 package vistas;
 
+import componentes.BgBorder;
 import componentes.CustomFont;
 import componentes.Metodos;
 import java.awt.Color;
@@ -27,6 +28,7 @@ import javax.swing.UIManager;
 public class EntradaSalidaAlternative extends javax.swing.JFrame {
 Metodos metodos = new Metodos();
 int id_tarifaDB =0;
+BgBorder fondo = new BgBorder();
 
     /**
      * Creates new form CajaAlternative
@@ -69,8 +71,9 @@ int id_tarifaDB =0;
         pantalla = Toolkit.getDefaultToolkit().getScreenSize();
         cuadro = this.getSize();
 
-        this.setLocation(((pantalla.width - cuadro.width) / 2),   (pantalla.height - cuadro.height) / 2);
+        this.setLocation(((pantalla.width - cuadro.width) / 2),   (pantalla.height - cuadro.height) / 50);
         jLabel8.setText("Empleado: "+Metodos.nombreEmpleado);
+        
         
     }
 
@@ -126,7 +129,6 @@ int id_tarifaDB =0;
         buttonClose.setLayout(new java.awt.BorderLayout());
 
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/delete_32px.png"))); // NOI18N
         jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel1MouseClicked(evt);
@@ -211,6 +213,7 @@ int id_tarifaDB =0;
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel6.setText("Tarifa");
 
+        txtTarifa.setEditable(false);
         txtTarifa.setFont(new java.awt.Font("Century Gothic", 0, 36)); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -283,6 +286,7 @@ int id_tarifaDB =0;
 
         jPanel4.setBackground(new java.awt.Color(144, 203, 249));
 
+        areaMensajes.setEditable(false);
         areaMensajes.setColumns(20);
         areaMensajes.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
         areaMensajes.setRows(5);
@@ -358,7 +362,7 @@ int id_tarifaDB =0;
     
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
         // TODO add your handling code here:
-        System.exit(0);
+//        System.exit(0);
     }//GEN-LAST:event_jLabel1MouseClicked
 
     private void jLabel1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseEntered

@@ -5,6 +5,8 @@
  */
 package vistas;
 
+
+import componentes.BgBorder;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -13,6 +15,8 @@ import javax.swing.JOptionPane;
 import componentes.Metodos;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 /**
@@ -21,17 +25,23 @@ import javax.swing.ImageIcon;
  */
 public class Login extends javax.swing.JFrame {
 Metodos o = new Metodos();
+BgBorder fondo = new BgBorder();
     /**
      * Creates new form Login
      */
     public Login() {
-        initComponents();
+         setContentPane(fondo);
         this.setTitle("Log in");
+        initComponents();
+        
         try{
             //this.setIconImage(new ImageIcon(getClass().getResource ("../multimedia/iconoApp.png")).getImage());
              setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/multimedia/iconoApp.png")));
         }catch(Exception ex){JOptionPane.showMessageDialog(null,"wdwd"+ex);}
         //this.setResizable(false);
+     
+       
+        
         
 
         //AHORA LA CENTRARÉ EN LA PANTALLA
@@ -40,7 +50,7 @@ Metodos o = new Metodos();
         cuadro = this.getSize();
 
         this.setLocation(((pantalla.width - cuadro.width) / 2),
-                (pantalla.height - cuadro.height) / 2);
+                (pantalla.height - cuadro.height) / 50);
     }
 
     /**
@@ -52,6 +62,7 @@ Metodos o = new Metodos();
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jInternalFrame1 = new javax.swing.JInternalFrame();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
@@ -65,29 +76,51 @@ Metodos o = new Metodos();
         jLabel2 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
 
+        jInternalFrame1.setVisible(true);
+
+        javax.swing.GroupLayout jInternalFrame1Layout = new javax.swing.GroupLayout(jInternalFrame1.getContentPane());
+        jInternalFrame1.getContentPane().setLayout(jInternalFrame1Layout);
+        jInternalFrame1Layout.setHorizontalGroup(
+            jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jInternalFrame1Layout.setVerticalGroup(
+            jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel2.setOpaque(false);
 
-        jPanel3.setBackground(new java.awt.Color(41, 170, 228));
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel3.setOpaque(false);
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(236, 240, 241));
+        jLabel4.setForeground(new java.awt.Color(36, 23, 8));
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("Correo:");
+        jLabel4.setOpaque(true);
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(236, 240, 241));
+        jLabel5.setForeground(new java.awt.Color(36, 23, 8));
         jLabel5.setText("Contraseña:");
+        jLabel5.setOpaque(true);
 
-        correoU.setBackground(new java.awt.Color(226, 29, 134));
+        correoU.setBackground(new java.awt.Color(255, 255, 222));
         correoU.setFont(new java.awt.Font("Century Gothic", 0, 36)); // NOI18N
-        correoU.setForeground(new java.awt.Color(228, 241, 254));
+        correoU.setForeground(new java.awt.Color(36, 23, 8));
         correoU.setText("miguelemmanuel_montiel@hotmail.com");
+        correoU.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                correoUActionPerformed(evt);
+            }
+        });
 
-        passwordU.setBackground(new java.awt.Color(226, 29, 134));
         passwordU.setFont(new java.awt.Font("Century Gothic", 0, 36)); // NOI18N
-        passwordU.setForeground(new java.awt.Color(228, 241, 254));
+        passwordU.setForeground(new java.awt.Color(36, 23, 8));
         passwordU.setText("111");
 
         jButton1.setBackground(new java.awt.Color(34, 167, 240));
@@ -110,8 +143,8 @@ Metodos o = new Metodos();
             }
         });
 
-        jLabelRegister.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        jLabelRegister.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelRegister.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
+        jLabelRegister.setForeground(new java.awt.Color(36, 23, 8));
         jLabelRegister.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelRegister.setText("Click aqui para registrar a un usuario");
         jLabelRegister.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -131,7 +164,7 @@ Metodos o = new Metodos();
                     .addComponent(passwordU, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(correoU)
+                    .addComponent(correoU, javax.swing.GroupLayout.DEFAULT_SIZE, 791, Short.MAX_VALUE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
@@ -156,17 +189,19 @@ Metodos o = new Metodos();
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(58, 58, 58)
                 .addComponent(jLabelRegister)
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addContainerGap(38, Short.MAX_VALUE))
         );
 
-        jPanel4.setBackground(new java.awt.Color(243, 148, 32));
+        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel4.setOpaque(false);
 
+        jLabel2.setBackground(new java.awt.Color(255, 255, 255));
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setForeground(new java.awt.Color(36, 23, 8));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Iniciar sesión");
 
-        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/iconoAries.png"))); // NOI18N
+        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/brownletter.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -196,22 +231,25 @@ Metodos o = new Metodos();
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -220,30 +258,6 @@ Metodos o = new Metodos();
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        boolean veri = false;
-    try {
-        veri = o.login();
-    } catch (SQLException ex) {
-        Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-    }
-        if (true!=veri) {JOptionPane.showMessageDialog(null, "Usuario y/o password incorrectos");}else{
-            Panel f = new Panel();
-            /*f.setVisible(true);*/
-            f.setVisible(true);
-            this.hide();
-            this.dispose();
-            String corroep = correoU.getText();
-            Metodos.correoEmpleado=correoU.getText();
-            Metodos.nombreEmpleado=o.getNameUser(corroep);
-            Metodos.tipoEmpleado=o.getTypeUser(corroep);
-            
-                    
-        }
-
-
-    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jLabelRegisterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelRegisterMouseClicked
         Register rgf = new Register();
@@ -258,6 +272,32 @@ Metodos o = new Metodos();
         // TODO add your handling code here:
         System.exit(0);
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        boolean veri = false;
+        try {
+            veri = o.login();
+        } catch (SQLException ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if (true!=veri) {JOptionPane.showMessageDialog(null, "Usuario y/o password incorrectos");}else{
+            Panel f = new Panel();
+            /*f.setVisible(true);*/
+            f.setVisible(true);
+            this.hide();
+            this.dispose();
+            String corroep = correoU.getText();
+            Metodos.correoEmpleado=correoU.getText();
+            Metodos.nombreEmpleado=o.getNameUser(corroep);
+            Metodos.tipoEmpleado=o.getTypeUser(corroep);
+
+        }
+
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void correoUActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_correoUActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_correoUActionPerformed
 
     /**
      * @param args the command line arguments
@@ -305,6 +345,7 @@ Metodos o = new Metodos();
     public static javax.swing.JTextField correoU;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
+    private javax.swing.JInternalFrame jInternalFrame1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;

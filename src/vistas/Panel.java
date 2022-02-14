@@ -5,6 +5,7 @@
  */
 package vistas;
 
+import componentes.BgBorder;
 import componentes.Metodos;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -13,6 +14,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.UIManager;
 
 /**
@@ -21,14 +23,15 @@ import javax.swing.UIManager;
  */
 public class Panel extends javax.swing.JFrame {
 Metodos metodos = new Metodos();
-
+BgBorder fondo = new BgBorder();
     /**
      * Creates new form Caja
      */
     public Panel() {
-       
+       //this.setContentPane(fondo);
         initComponents();
-        this.setTitle("Panel principal           :"+Metodos.nombreEmpleado+" "+Metodos.correoEmpleado);
+        this.setExtendedState(MAXIMIZED_BOTH);
+        this.setTitle("Panel principal           :"+Metodos.nombreEmpleado);
         try{
             setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/multimedia/iconoApp.png")));
         }catch(Exception ex){JOptionPane.showMessageDialog(null,"wdwd"+ex);}
@@ -40,9 +43,14 @@ Metodos metodos = new Metodos();
         Dimension pantalla, cuadro;
         pantalla = Toolkit.getDefaultToolkit().getScreenSize();
         cuadro = this.getSize();
-
         this.setLocation(((pantalla.width - cuadro.width) / 2),
-                (pantalla.height - cuadro.height) / 2);
+                (pantalla.height - cuadro.height) / 50);
+       
+        
+        this.getContentPane().add(jScrollPane1);        
+        jScrollPane1.add(dashboard);
+        jScrollPane1.setViewportView(dashboard);
+        
         
     }
 
@@ -55,16 +63,7 @@ Metodos metodos = new Metodos();
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        header = new javax.swing.JPanel();
-        iconMaxClose = new javax.swing.JPanel();
-        buttonClose = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        buttonBack = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        jPanel3 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
-        jLabel11 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
         dashboard = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         jPanel12 = new javax.swing.JPanel();
@@ -95,79 +94,14 @@ Metodos metodos = new Metodos();
         jLabel9 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        header.setBackground(new java.awt.Color(15, 19, 52));
-        header.setPreferredSize(new java.awt.Dimension(666, 50));
-        header.setLayout(new java.awt.BorderLayout());
-
-        iconMaxClose.setBackground(new java.awt.Color(5, 10, 46));
-        iconMaxClose.setPreferredSize(new java.awt.Dimension(150, 50));
-        iconMaxClose.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        buttonClose.setBackground(new java.awt.Color(5, 10, 46));
-        buttonClose.setPreferredSize(new java.awt.Dimension(50, 50));
-        buttonClose.setLayout(new java.awt.BorderLayout());
-
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/delete_32px.png"))); // NOI18N
-        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel1MouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jLabel1MouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                jLabel1MouseExited(evt);
-            }
-        });
-        buttonClose.add(jLabel1, java.awt.BorderLayout.CENTER);
-
-        iconMaxClose.add(buttonClose, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 0, 50, 50));
-
-        buttonBack.setBackground(new java.awt.Color(5, 10, 46));
-        buttonBack.setPreferredSize(new java.awt.Dimension(50, 50));
-        buttonBack.setLayout(new java.awt.BorderLayout());
-
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/back_32px.png"))); // NOI18N
-        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel2MouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jLabel2MouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                jLabel2MouseExited(evt);
-            }
-        });
-        buttonBack.add(jLabel2, java.awt.BorderLayout.CENTER);
-
-        iconMaxClose.add(buttonBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 0, -1, 50));
-
-        jPanel3.setBackground(new java.awt.Color(5, 10, 46));
-        jPanel3.setPreferredSize(new java.awt.Dimension(50, 50));
-        jPanel3.setLayout(new java.awt.BorderLayout());
-        jPanel3.add(jLabel3, java.awt.BorderLayout.CENTER);
-
-        iconMaxClose.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 50, 50));
-
-        header.add(iconMaxClose, java.awt.BorderLayout.LINE_END);
-
-        jPanel2.setOpaque(false);
-        jPanel2.setLayout(new java.awt.BorderLayout());
-
-        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/iconoAries.png"))); // NOI18N
-        jPanel2.add(jLabel11, java.awt.BorderLayout.CENTER);
-
-        header.add(jPanel2, java.awt.BorderLayout.LINE_START);
-
-        getContentPane().add(header, java.awt.BorderLayout.PAGE_START);
+        setBackground(new java.awt.Color(73, 128, 242));
+        getContentPane().add(jScrollPane1, java.awt.BorderLayout.PAGE_START);
 
         dashboard.setBackground(new java.awt.Color(73, 128, 242));
+        dashboard.setOpaque(false);
 
         jPanel6.setBackground(new java.awt.Color(0, 0, 0));
+        jPanel6.setOpaque(false);
         jPanel6.setLayout(new java.awt.GridLayout(1, 0));
 
         jPanel12.setLayout(new java.awt.GridLayout(1, 0));
@@ -207,7 +141,7 @@ Metodos metodos = new Metodos();
         panelPlanesLayout.setVerticalGroup(
             panelPlanesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelPlanesLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addComponent(jLabel19)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel12)
@@ -251,7 +185,7 @@ Metodos metodos = new Metodos();
         jPanel16Layout.setVerticalGroup(
             jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel16Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addComponent(jLabel18)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel6)
@@ -287,16 +221,17 @@ Metodos metodos = new Metodos();
             jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel18Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE))
                 .addContainerGap())
-            .addComponent(jLabel20, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 299, Short.MAX_VALUE)
         );
         jPanel18Layout.setVerticalGroup(
             jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel18Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel20)
-                .addGap(18, 18, 18)
+                .addContainerGap()
+                .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel7)
                 .addContainerGap())
         );
@@ -304,6 +239,8 @@ Metodos metodos = new Metodos();
         jPanel12.add(jPanel18);
 
         jPanel20.setBackground(new java.awt.Color(73, 128, 242));
+        jPanel20.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jPanel20.setFocusTraversalPolicyProvider(true);
 
         jLabel10.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
@@ -331,15 +268,15 @@ Metodos metodos = new Metodos();
             .addGroup(jPanel20Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel21, javax.swing.GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE))
+                    .addComponent(jLabel21, javax.swing.GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE)
+                    .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel20Layout.setVerticalGroup(
             jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel20Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel21)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel20Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel10)
                 .addContainerGap())
@@ -381,12 +318,9 @@ Metodos metodos = new Metodos();
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(7, 7, 7))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
-                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())))
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -435,11 +369,11 @@ Metodos metodos = new Metodos();
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel9Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(38, Short.MAX_VALUE)
                 .addComponent(jLabel14)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel13)
-                .addGap(41, 41, 41))
+                .addGap(35, 35, 35))
         );
 
         jPanel7.add(jPanel9);
@@ -537,121 +471,54 @@ Metodos metodos = new Metodos();
         dashboard.setLayout(dashboardLayout);
         dashboardLayout.setHorizontalGroup(
             dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(dashboardLayout.createSequentialGroup()
-                .addGroup(dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 1199, Short.MAX_VALUE))
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 1199, Short.MAX_VALUE)
         );
         dashboardLayout.setVerticalGroup(
             dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(dashboardLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         getContentPane().add(dashboard, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-/********************************************************************************************************************************************************/
-   public void changecolor(JPanel hover, Color rand){
-        hover.setBackground(rand);
-    }
-   
-    public void clickmenu(JPanel h1, JPanel h2, int numberbool) {
-        if (numberbool == 1) {
-            h1.setBackground(new Color(25, 29, 74));
-            h2.setBackground(new Color(5, 10, 46));
+
+    private void jLabel9MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel9MouseExited
+        // TODO add your handling code here:
+        changecolor(jPanel11,new Color(73,128,242));
+    }//GEN-LAST:event_jLabel9MouseExited
+
+    private void jLabel9MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel9MouseEntered
+        // TODO add your handling code here:
+        changecolor(jPanel11,new Color(255,255,186));
+    }//GEN-LAST:event_jLabel9MouseEntered
+
+    private void jLabel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel9MouseClicked
+        // TODO add your handling code here:
+
+        if (Metodos.tipoEmpleado.equals("Administrador")) {
+            ConfiguracionCaja ccja = new ConfiguracionCaja();
+            this.dispose();
+            ccja.setVisible(true);
         } else {
-            h1.setBackground(new Color(5, 10, 46));
-            h2.setBackground(new Color(25, 29, 74));
+            JOptionPane.showMessageDialog(null, "No eres administrador");
         }
-    }
-
-    
-   
-   /**************************************************************************************************************************************************/
-    
-    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
-        // TODO add your handling code here:
-        System.exit(0);
-    }//GEN-LAST:event_jLabel1MouseClicked
-
-    private void jLabel1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseEntered
-        // TODO add your handling code here:
-        changecolor(buttonClose,new Color(255,0,0));
-    }//GEN-LAST:event_jLabel1MouseEntered
-
-    private void jLabel1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseExited
-        // TODO add your handling code here:
-        changecolor(buttonClose,new Color(5,10,46));
-    }//GEN-LAST:event_jLabel1MouseExited
-
-    private void jLabel2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseEntered
-        // TODO add your handling code here:
-        changecolor(buttonBack,new Color(251,153,255));
-    }//GEN-LAST:event_jLabel2MouseEntered
-
-    private void jLabel2MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseExited
-        // TODO add your handling code here:
-        changecolor(buttonBack,new Color(5,10,46));
-    }//GEN-LAST:event_jLabel2MouseExited
-
-    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
-        // TODO add your handling code here:
-        this.dispose();
-        Panel o = new Panel();
-        o.setVisible(true);
-    }//GEN-LAST:event_jLabel2MouseClicked
-
-    private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
-        // TODO add your handling code here:
-       
-        EntradaSalidaAlternative p = new EntradaSalidaAlternative();
-        p.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_jLabel8MouseClicked
-
-    private void jLabel8MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseEntered
-        // TODO add your handling code here:
-        changecolor(jPanel8,new Color(255,255,186));
-    }//GEN-LAST:event_jLabel8MouseEntered
-
-    private void jLabel8MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseExited
-        // TODO add your handling code here:
-        changecolor(jPanel8,new Color(73,128,242));
-    }//GEN-LAST:event_jLabel8MouseExited
-
-    private void jLabel14MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel14MouseEntered
-        // TODO add your handling code here:
-        changecolor(jPanel9,new Color(255,255,186));
-    }//GEN-LAST:event_jLabel14MouseEntered
-
-    private void jLabel14MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel14MouseExited
-        // TODO add your handling code here:
-         changecolor(jPanel9,new Color(73,128,242));
-    }//GEN-LAST:event_jLabel14MouseExited
-
-    private void jLabel16MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel16MouseEntered
-        // TODO add your handling code here:
-        changecolor(jPanel10,new Color(255,255,186));
-    }//GEN-LAST:event_jLabel16MouseEntered
+    }//GEN-LAST:event_jLabel9MouseClicked
 
     private void jLabel16MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel16MouseExited
         // TODO add your handling code here:
         changecolor(jPanel10,new Color(73,128,242));
     }//GEN-LAST:event_jLabel16MouseExited
 
-    private void jLabel14MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel14MouseClicked
+    private void jLabel16MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel16MouseEntered
         // TODO add your handling code here:
-        this.dispose();
-        Caja caja = new Caja();
-        caja.setVisible(true);
-    }//GEN-LAST:event_jLabel14MouseClicked
+        changecolor(jPanel10,new Color(255,255,186));
+    }//GEN-LAST:event_jLabel16MouseEntered
 
     private void jLabel16MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel16MouseClicked
         // TODO add your handling code here:
@@ -660,33 +527,45 @@ Metodos metodos = new Metodos();
             ChangePassword changeP = new ChangePassword();
             changeP.setVisible(true);
         }else{
-        JOptionPane.showMessageDialog(null,"No eres administrador");
+            JOptionPane.showMessageDialog(null,"No eres administrador");
         }
-        
+
     }//GEN-LAST:event_jLabel16MouseClicked
 
-    private void jLabel9MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel9MouseEntered
+    private void jLabel14MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel14MouseExited
         // TODO add your handling code here:
-        changecolor(jPanel11,new Color(255,255,186));
-    }//GEN-LAST:event_jLabel9MouseEntered
+        changecolor(jPanel9,new Color(73,128,242));
+    }//GEN-LAST:event_jLabel14MouseExited
 
-    private void jLabel9MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel9MouseExited
+    private void jLabel14MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel14MouseEntered
         // TODO add your handling code here:
-        changecolor(jPanel11,new Color(73,128,242));
-    }//GEN-LAST:event_jLabel9MouseExited
+        changecolor(jPanel9,new Color(255,255,186));
+    }//GEN-LAST:event_jLabel14MouseEntered
 
-    private void jLabel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel9MouseClicked
+    private void jLabel14MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel14MouseClicked
         // TODO add your handling code here:
-        
-        if (Metodos.tipoEmpleado.equals("Administrador")) {
-            ConfiguracionCaja ccja = new ConfiguracionCaja();
-            this.dispose();
-            ccja.setVisible(true);
-        } else {
-            JOptionPane.showMessageDialog(null, "No eres administrador");
-        }
+        this.dispose();
+        Caja caja = new Caja();
+        caja.setVisible(true);
+    }//GEN-LAST:event_jLabel14MouseClicked
 
-    }//GEN-LAST:event_jLabel9MouseClicked
+    private void jLabel8MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseExited
+        // TODO add your handling code here:
+        changecolor(jPanel8,new Color(73,128,242));
+    }//GEN-LAST:event_jLabel8MouseExited
+
+    private void jLabel8MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseEntered
+        // TODO add your handling code here:
+        changecolor(jPanel8,new Color(255,255,186));
+    }//GEN-LAST:event_jLabel8MouseEntered
+
+    private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
+        // TODO add your handling code here:
+
+        EntradaSalidaAlternative p = new EntradaSalidaAlternative();
+        p.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel8MouseClicked
 
     private void jLabel21MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel21MouseExited
         // TODO add your handling code here:
@@ -746,15 +625,15 @@ Metodos metodos = new Metodos();
         o.setVisible(true);
     }//GEN-LAST:event_jLabel18MouseClicked
 
-    private void jLabel19MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel19MouseEntered
-        // TODO add your handling code here:
-        changecolor(panelPlanes,new Color(255,255,186));
-    }//GEN-LAST:event_jLabel19MouseEntered
-
     private void jLabel19MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel19MouseExited
         // TODO add your handling code here:
         changecolor(panelPlanes,new Color(73,128,242));
     }//GEN-LAST:event_jLabel19MouseExited
+
+    private void jLabel19MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel19MouseEntered
+        // TODO add your handling code here:
+        changecolor(panelPlanes,new Color(255,255,186));
+    }//GEN-LAST:event_jLabel19MouseEntered
 
     private void jLabel19MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel19MouseClicked
         // TODO add your handling code here:
@@ -762,7 +641,23 @@ Metodos metodos = new Metodos();
         esp.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jLabel19MouseClicked
+/********************************************************************************************************************************************************/
+   public void changecolor(JPanel hover, Color rand){
+        hover.setBackground(rand);
+    }
+   
+    public void clickmenu(JPanel h1, JPanel h2, int numberbool) {
+        if (numberbool == 1) {
+            h1.setBackground(new Color(25, 29, 74));
+            h2.setBackground(new Color(5, 10, 46));
+        } else {
+            h1.setBackground(new Color(5, 10, 46));
+            h2.setBackground(new Color(25, 29, 74));
+        }
+    }
 
+    
+   
     /**
      * @param args the command line arguments
      */
@@ -814,14 +709,8 @@ Metodos metodos = new Metodos();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel buttonBack;
-    private javax.swing.JPanel buttonClose;
     private javax.swing.JPanel dashboard;
-    private javax.swing.JPanel header;
-    private javax.swing.JPanel iconMaxClose;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
@@ -830,10 +719,8 @@ Metodos metodos = new Metodos();
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -844,13 +731,12 @@ Metodos metodos = new Metodos();
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel18;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel20;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel panelPlanes;
     // End of variables declaration//GEN-END:variables
 }
