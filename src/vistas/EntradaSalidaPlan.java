@@ -276,29 +276,32 @@ Metodos metodos = new Metodos();
     private void btnRegEntradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegEntradaActionPerformed
         // TODO add your handling code here:
         long longArray[]=null;
+        String[] mensajes = new String[5];
         String hora_entrada = labelReloj.getText();
         String telefono = txtId.getText();
         String correo = Metodos.correoEmpleado;
         LocalDate todaysDate = LocalDate.now();
         String fecha = todaysDate.toString();
         boolean snr;        
+        String d,h,m,s,men = null;
+        mensajes = metodos.calcularTiempoRestanteParaPlan(telefono,fecha,hora_entrada);
         snr = metodos.verificarSalidaNoRegistradaPension(telefono);
         if (snr==true) {
             JOptionPane.showMessageDialog(null,"Ya existe un ingreso pero no ha registrado salida");
         }else{
-            metodos.saveMovimientosEntradaSalidaPension(fecha,hora_entrada,telefono,correo);
-          //metodos.generarTicket(correo, fechaF, hora_entrada, id_tarifaDB, placa);
-          String tiempoVencimientoRestante= metodos.calcularTiempoRestanteParaPlan(telefono,fecha,hora_entrada);
-          /*longArray=metodos.calcularTiempoRestanteParaPlann2(telefono,fecha,hora_entrada);
-          long d,h,m,s;
-            //for (int i = 0; i < longArray.length; i++) {
-                d=longArray[0];
-                h=longArray[1];
-                m=longArray[2];
-                s=longArray[3];*/
+            
+            
+            men = mensajes[4];
+            if (men.equals("Plan vencido")) {
                 
-            //}
-          JOptionPane.showMessageDialog(null,tiempoVencimientoRestante);
+            }else{
+                metodos.saveMovimientosEntradaSalidaPension(fecha,hora_entrada,telefono,correo);
+                metodos.generarTicketPlan(Metodos.correoEmpleado,fecha,hora_entrada,telefono,men);
+            }
+          //metodos.generarTicket(correo, fechaF, hora_entrada, id_tarifaDB, placa);
+          
+          
+          JOptionPane.showMessageDialog(null,men);
         }
         
             

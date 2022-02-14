@@ -1444,26 +1444,40 @@ public class Metodos
     return fechaV;
     }
     
-    public String calcularTiempoRestanteParaPlan(String telefono,String fecha, String hora_entrada){
+    public String[] calcularTiempoRestanteParaPlan(String telefono,String fecha, String hora_entrada){
+        String[] mensajes = new String[5];
         String tiempoV="";
         String fechaHoy = fecha+" "+hora_entrada;
         String fechaVencimiento = selectFechaVencimientoPlan(telefono);
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        long l;
+        long day;
+        long hour;
+        long min;
+        long s;
         try {
                 java.util.Date now = df.parse(fechaVencimiento);//--Vencimiento
                 java.util.Date date = df.parse(fechaHoy);//--hoy
-                long l = now.getTime() - date.getTime();
-                long day = l / (24 * 60 * 60 * 1000);
-                long hour = (l / (60 * 60 * 1000) - day * 24);
-                long min = ((l / (60 * 1000)) - day * 24 * 60 - hour * 60);
-                long s = (l / 1000 - day * 24 * 60 * 60 - hour * 60 * 60 - min * 60);
+                l = now.getTime() - date.getTime();
+                day = l / (24 * 60 * 60 * 1000);
+                hour = (l / (60 * 60 * 1000) - day * 24);
+                min = ((l / (60 * 1000)) - day * 24 * 60 - hour * 60);
+                s = (l / 1000 - day * 24 * 60 * 60 - hour * 60 * 60 - min * 60);
+                
                 tiempoV ="Tiempo restante plan: " + day + " día " + hour + " hora " + min + " minuto ";
-            
+                if (day<=0 && hour<=0 && min <=0 && s<=0) {
+                    tiempoV = "Plan vencido";
+                }else{tiempoV = "Quedan: "+day+" dia(s), "+hour+" hora(s), "+min+" minuto(s), "+s+" segundos: ";}
+                mensajes[0] = day + "";
+                mensajes[1] = hour + "";
+                mensajes[2] = min + "";
+                mensajes[3] = s + "";
+                mensajes[4] = tiempoV;
             
         } catch (ParseException ex) {
             Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
         }
-    return tiempoV;
+    return mensajes;
     }
     
     public void saveMovimientosEntradaSalidaPension(String fecha,String hora_entrada,String telefono,String correo){
@@ -2252,5 +2266,89 @@ public class Metodos
         imprimirTicket(result2 + placa);
 
     }
+    
+    public void generarTicketPlan(String employeeName, String fecha, String hora_entrada, String usuario,String mensaje) {
 
+        //Double tarifa = getVehicleType(id_tarifaDB);
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        //System.out.println(timestamp);
+        String lop = timestamp.toString();
+        String result = lop.replaceAll("\\p{Punct}", "");
+        String result2 = result.replace(" ", "");
+        Paragraph line1, line2, line3, line4, line5, line6, line7, line8, line9, line10, line11, line12, line13, line14, line15;
+
+        line1 = new Paragraph("\n\n\n\n\n\n\n\n\n\n=====================================================================");
+        line2 = new Paragraph("Estacionamiento Aries");
+        line3 = new Paragraph("Av 6 Ote 406");
+        line4 = new Paragraph("Centro histórico de Puebla.");
+        line5 = new Paragraph("72000 Puebla, Pue.");
+        line6 = new Paragraph("");
+        line7 = new Paragraph("");
+        line8 = new Paragraph("Atendio: " + employeeName);
+        line9 = new Paragraph("——————————–——————————–——————————–——————————–");
+        line10 = new Paragraph(fecha+" "+hora_entrada);
+        line11 = new Paragraph("");
+        line12 = new Paragraph(mensaje+" para terminar el plan");
+        line13 = new Paragraph(" Costo por carnet perdido $100 ");
+        line14 = new Paragraph("Estacionamiento Aries no se hace responsable por fallas mecanicas o electricas, así como objetos dejados en su interior que no hayan sido reportados a la administración.");
+        line15 = new Paragraph("=====================================================================");
+        line1.setAlignment(Element.ALIGN_CENTER);
+        line2.setAlignment(Element.ALIGN_CENTER);
+        line3.setAlignment(Element.ALIGN_CENTER);
+        line4.setAlignment(Element.ALIGN_CENTER);
+        line5.setAlignment(Element.ALIGN_CENTER);
+        line6.setAlignment(Element.ALIGN_CENTER);
+        line7.setAlignment(Element.ALIGN_CENTER);
+        line8.setAlignment(Element.ALIGN_CENTER);
+        line9.setAlignment(Element.ALIGN_CENTER);
+        line10.setAlignment(Element.ALIGN_CENTER);
+        line11.setAlignment(Element.ALIGN_CENTER);
+        line12.setAlignment(Element.ALIGN_CENTER);
+        line13.setAlignment(Element.ALIGN_CENTER);
+        line14.setAlignment(Element.ALIGN_CENTER);
+        line15.setAlignment(Element.ALIGN_CENTER);
+
+        // TODO code application logic here
+        try {
+            Document doc = new Document();
+            PdfWriter pdf = PdfWriter.getInstance(doc, new FileOutputStream("C:\\tmp\\" + result2 + usuario + "ticket.pdf"));
+            doc.open();
+            Barcode128 code = new Barcode128();
+            code.setCode(usuario);
+            Image img = code.createImageWithBarcode(pdf.getDirectContent(), BaseColor.BLACK, BaseColor.BLACK);
+            img.scalePercent(400);
+            img.setAlignment(Element.ALIGN_CENTER);
+
+            //doc.add(new Paragraph("Estacionamiento Aries")); //Nombre establecimient)o
+            doc.add(line1);
+            doc.add(line2);
+            doc.add(line3);
+            doc.add(line4);
+            doc.add(line5);
+            doc.add(line6);
+            doc.add(line7);
+            doc.add(line8);
+            doc.add(line9);
+            doc.add(line10);
+            doc.add(img);
+            doc.add(line11);
+            doc.add(line12);
+            doc.add(line13);
+            doc.add(line14);
+            doc.add(line15);
+
+            doc.close();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Barras.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (DocumentException ex) {
+            Logger.getLogger(Barras.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        //saveMovimientos(fecha, hora_entrada, id_tarifaDB, placa, employeeName);
+        //unComentLineToPrint
+        imprimirTicket(result2 + usuario);
+
+    }
+
+    
 }
