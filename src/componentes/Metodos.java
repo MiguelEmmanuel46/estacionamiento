@@ -570,6 +570,7 @@ public class Metodos
         String fechafinal = fechaF + " " + horaF;
         // String placas = txtPlacaSalida.getText();
         int id_movimiento = obtenerId(placas);
+        
         String fechaEntrada = obtenerHoraEntrada(id_movimiento);
         Vector nvec = new Vector();
         nvec = calculateTime(fechaEntrada, fechafinal);
@@ -588,28 +589,29 @@ public class Metodos
         if (dias >= 1) {
             tarifaACobrarXDIA = changeRateByDays(placas);
             tpd = dias * tarifaACobrarXDIA;
-             msg1 = "dias: "+dias+" x "+tarifaACobrarXDIA+"= "+tpd+"\n";
+             //msg1 = dias+" x "+tarifaACobrarXDIA+"= "+tpd+"\n";
+             msg1 = dias+"";
              System.out.println(tarifaACobrarXDIA+" tcpd\n");
         }else{tpd=0.0;}
         if (horas >= 1) {
             tph = horas * tarifaACobrar;
-            msg2 = "horas: "+horas+" x "+tarifaACobrar+"= "+tph+"\n";
+            //msg2 = "horas: "+horas+" x "+tarifaACobrar+"= "+tph+"\n";
+            msg2 = horas+"";
         }else{tph =0.0;}
-        if (minutos >= 5 && minutos <=60) {
+        if (minutos >= 0 && minutos <=60) {
             tpm = 1 * tarifaACobrar;
-            msg3 = "mins: "+minutos+" x "+tarifaACobrar+"= "+tpm+"\n";
+            //msg3 = "mins: "+minutos+" x "+tarifaACobrar+"= "+tpm+"\n";
+            msg3 =minutos+"";
         }else{tpm=0.0;}
         
         tarifaFinal=tpd+tph+tpm;
-            msg4 = "\nTotal a pagar: $"+tarifaFinal ;
+            msg4 = tarifaFinal+"" ;
         String tiempo = "dia: "+dia+" hora: "+hora+" minuto: "+minuto;
         mensajes[0] = msg1;
         mensajes[1] = msg2;
         mensajes[2] = msg3;
         mensajes[3] = tiempo;
         mensajes[4] = msg4;
-        
-        updateMovimientos(id_movimiento,placas,horaF,tiempo,tarifaFinal);
         
         return mensajes;
     }
@@ -663,20 +665,21 @@ public class Metodos
         String result = lop.replaceAll("\\p{Punct}", "");
         String result2 = result.replace(" ", "");
         Paragraph line1, line2, line3, line4, line5, line6, line7, line8, line9, line10, line11, line12, line13, line14, line15;
+
         line1 = new Paragraph("\n\n\n\n\n\n\n\n\n\n=====================================================================");
         line2 = new Paragraph("Estacionamiento Aries");
-        line3 = new Paragraph("Av 6 Ote 406"); 
+        line3 = new Paragraph("Av 6 Ote 406");
         line4 = new Paragraph("Centro histórico de Puebla.");
         line5 = new Paragraph("72000 Puebla, Pue.");
         line6 = new Paragraph("");
         line7 = new Paragraph("");
-        line8 = new Paragraph("Atendio");
-        line9 = new Paragraph(employeeName);
-        line10 = new Paragraph("——————————–——————————–——————————–——————————–");
-        line11 = new Paragraph(fecha);
-        line12 = new Paragraph(hora_entrada);
-        line13 = new Paragraph(" Tarifa por hora o fraccion, sin tolerancia:"+tarifa);
-        line14 = new Paragraph(" Costo por boleto perdido $100 ");
+        line8 = new Paragraph("Atendio: " + employeeName);
+        line9 = new Paragraph("——————————–——————————–——————————–——————————–");
+        line10 = new Paragraph(fecha);
+        line11 = new Paragraph(hora_entrada);
+        line12 = new Paragraph(" Tarifa por hora o fraccion, sin tolerancia:" + tarifa);
+        line13 = new Paragraph(" Costo por boleto perdido $100 ");
+        line14 = new Paragraph("Estacionamiento Aries no se hace responsable por fallas mecanicas o electricas, así como objetos dejados en su interior que no hayan sido reportados a la administración.");
         line15 = new Paragraph("=====================================================================");
         line1.setAlignment(Element.ALIGN_CENTER);
         line2.setAlignment(Element.ALIGN_CENTER);
@@ -1804,6 +1807,7 @@ public class Metodos
         PreparedStatement stmnt = null, stmnt2 = null;
         ResultSet rs = null, rs2 = null;
         DefaultTableModel model = new DefaultTableModel();
+         
 
         model.addColumn("Telefono");
         model.addColumn("Nombre completo");
@@ -2152,5 +2156,101 @@ public class Metodos
         return nombreArchivoCreado;
     }
 
+
+    public void generarTicketSalida(String employeeName, String placa,String hora_salida,String tiempo_transcurrido,String din_gen) {
+
+        //Double tarifa = getVehicleType(id_tarifaDB);
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+         LocalDate todaysDate = LocalDate.now(); 
+        String fechaHoy2 = todaysDate.toString();
+        String fechaEntrada0 = null;
+        String horaSalida0 = null;
+        PreparedStatement stmnt = null;
+        ResultSet rs = null;
+
+        
+        try {
+            stmnt = Conexion.conectar().prepareStatement("SELECT fecha,hora_entrada from movimientos WHERE placas='"+placa+"' AND hora_salida IS NULL");
+            rs = stmnt.executeQuery();
+            while(rs.next()){
+                fechaEntrada0 = rs.getString("fecha");
+                horaSalida0 = rs.getString("hora_entrada");
+                
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error:" + ex);
+        }
+        
+               
+      
+        String lop = timestamp.toString();
+        String result = lop.replaceAll("\\p{Punct}", "");
+        String result2 = result.replace(" ", "");
+        Paragraph line1, line2, line3, line4, line5, line6, line7, line8, line9, line10, line11, line12, line13, line14, line15;
+        line1 = new Paragraph("\n\n\n\n\n\n\n\n\n\n=====================================================================");
+        line2 = new Paragraph("Estacionamiento Aries");
+        line3 = new Paragraph("Av 6 Ote 406");
+        line4 = new Paragraph("Centro histórico de Puebla.");
+        line5 = new Paragraph("72000 Puebla, Pue.");
+        line6 = new Paragraph("");
+        line7 = new Paragraph("");
+        line8 = new Paragraph("Ticket Salida");
+        line9 = new Paragraph("Atendio: "+employeeName);
+        line10 = new Paragraph("——————————–——————————–——————————–——————————–");
+        line11 = new Paragraph("Entrada: "+fechaEntrada0+" "+horaSalida0);
+        line12 = new Paragraph("Salida: "+fechaHoy2+" "+hora_salida);
+        line13 = new Paragraph(tiempo_transcurrido+" importe pagado: $"+din_gen);
+        line14 = new Paragraph(" Este ticket no es un comprobante fiscal ");
+        line15 = new Paragraph("=====================================================================");
+        line1.setAlignment(Element.ALIGN_CENTER);
+        line2.setAlignment(Element.ALIGN_CENTER);
+        line3.setAlignment(Element.ALIGN_CENTER);
+        line4.setAlignment(Element.ALIGN_CENTER);
+        line5.setAlignment(Element.ALIGN_CENTER);
+        line6.setAlignment(Element.ALIGN_CENTER);
+        line7.setAlignment(Element.ALIGN_CENTER);
+        line8.setAlignment(Element.ALIGN_CENTER);
+        line9.setAlignment(Element.ALIGN_CENTER);
+        line10.setAlignment(Element.ALIGN_CENTER);
+        line11.setAlignment(Element.ALIGN_CENTER);
+        line12.setAlignment(Element.ALIGN_CENTER);
+        line13.setAlignment(Element.ALIGN_CENTER);
+        line14.setAlignment(Element.ALIGN_CENTER);
+        line15.setAlignment(Element.ALIGN_CENTER);
+        try {
+            Document doc = new Document();
+            PdfWriter pdf = PdfWriter.getInstance(doc, new FileOutputStream("C:\\tmp\\" + result2 + placa + "ticket.pdf"));
+            doc.open();
+            Barcode128 code = new Barcode128();
+            code.setCode(placa);
+            Image img = code.createImageWithBarcode(pdf.getDirectContent(), BaseColor.BLACK, BaseColor.BLACK);
+            img.scalePercent(400);
+            img.setAlignment(Element.ALIGN_CENTER);
+            doc.add(line1);
+            doc.add(line2);
+            doc.add(line3);
+            doc.add(line4);
+            doc.add(line5);
+            doc.add(line6);
+            doc.add(line7);
+            doc.add(line8);
+            doc.add(line9);
+            doc.add(line10);
+            doc.add(img);
+            doc.add(line11);
+            doc.add(line12);
+            doc.add(line13);
+            doc.add(line14);
+            doc.add(line15);
+
+            doc.close();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Barras.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (DocumentException ex) {
+            Logger.getLogger(Barras.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        imprimirTicket(result2 + placa);
+
+    }
 
 }

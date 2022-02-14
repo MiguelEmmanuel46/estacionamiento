@@ -433,21 +433,31 @@ BgBorder fondo = new BgBorder();
     }//GEN-LAST:event_vESListaVehiculoActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        // REGISTRAR SALIDA
 
         areaMensajes.setText("");
         String[] mensajes = null;
         String horaF = labelVEReloj.getText();
-        String placas = txtPlacaSalida.getText();
+        String placas = txtPlacaSalida.getText().toUpperCase();
+        String mensajjeToTicket="";
         boolean checkisEnrollment;
+        String correo = Metodos.correoEmpleado;
         checkisEnrollment = metodos.checkEnrollmentIsNull(placas);
+
         if (checkisEnrollment==true) {
-            mensajes = metodos.calculateRateToPay(horaF, placas);
+            
+           mensajes = metodos.calculateRateToPay(horaF, placas);
             for (int i = 0; i < mensajes.length; i++) {
-                areaMensajes.append(mensajes[i]);
+                areaMensajes.append(mensajes[i]+"\n");
             }
             //metodos.updateMovimientos(fecha,placa,hora_salida,mensajes,dinero_generado);
-            System.out.println(mensajes[3]);
+           // System.out.println(mensajes[3]);
+                   mensajjeToTicket = mensajes[3];
+           String din_gen=mensajes[4];
+           
+           metodos.generarTicketSalida(correo,placas,horaF,mensajjeToTicket,din_gen) ;
+            int id_movimiento = metodos.obtenerId(placas);
+            metodos.updateMovimientos(id_movimiento, placas, horaF, mensajes[3], Double.parseDouble(mensajes[4]));
         }else{
             JOptionPane.showMessageDialog(null, "La Placa ya ha registrado salida");
         }
