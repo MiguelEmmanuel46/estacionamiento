@@ -639,15 +639,22 @@ Funciones f = new Funciones();
         cantidad_plan = Integer.parseInt(txtCantidad.getText());
         id_plan = comboPlan.getSelectedIndex()+1;
         
-        int is_activo=metodos.verificarPlanActivo(telefono);
-        if (is_activo==1) {
-            JOptionPane.showMessageDialog(null,"El usuario tiene un plan activo");
+        int existe = metodos.selectIsRegisteredPlan(telefono);
+        if (existe==0) {
+            metodos.insertPension(telefono, nombre, apellidop, apellidom, direccion, identificacion, id_plan, dia_inicio, hora_inicio, cantidad_plan, activo, importe_pagado);
+            metodos.createTicketPension(telefono, employeeName);
         }else{
-            metodos.insertPension(telefono, nombre, apellidop, apellidom, direccion, identificacion, id_plan, dia_inicio, hora_inicio, cantidad_plan, activo,importe_pagado);
-            metodos.createTicketPension(telefono,employeeName);
-            
+            int is_activo=metodos.verificarPlanActivo(telefono);
+            if (is_activo==1) {
+                JOptionPane.showMessageDialog(null,"El usuario tiene un plan activo");
+            }else if(is_activo==0){
+                 metodos.updatePension(telefono, nombre, apellidop, apellidom, direccion, identificacion, id_plan, dia_inicio, hora_inicio, cantidad_plan, activo,importe_pagado);
+                metodos.createTicketPension(telefono,employeeName);
+
+            }
         }
          
+        
         
         //metodos.createTicketPension(employeeName,dia_inicio,id_plan);
         
@@ -659,7 +666,7 @@ Funciones f = new Funciones();
        // int id_plan=comboPlan.getSelectedIndex();
        //int id_plan=comboPlan.getSelectedIndex()+1;
         int id_plan=comboPlan.getSelectedIndex()+1;
-        System.out.println(id_plan);
+        //System.out.println(id_plan);
        Double precio =0.0;
        Double cantidad=0.0;
        int cantidad2 =0;

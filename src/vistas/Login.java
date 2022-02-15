@@ -275,21 +275,27 @@ BgBorder fondo = new BgBorder();
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         boolean veri = false;
+        
+        char[] contrasena = passwordU.getPassword();
+        String correousuario = correoU.getText();
+        
         try {
-            veri = o.login();
+            veri = o.login(correousuario,contrasena);
         } catch (SQLException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }
         if (true!=veri) {JOptionPane.showMessageDialog(null, "Usuario y/o password incorrectos");}else{
+            Metodos.correoEmpleado = correoU.getText();
+            Metodos.nombreEmpleado=o.getNameUser(Metodos.correoEmpleado);
+            Metodos.tipoEmpleado=o.getTypeUser(Metodos.correoEmpleado);
             Panel f = new Panel();
             /*f.setVisible(true);*/
             f.setVisible(true);
-            this.hide();
+          //  this.hide();
             this.dispose();
             String corroep = correoU.getText();
-            Metodos.correoEmpleado=correoU.getText();
-            Metodos.nombreEmpleado=o.getNameUser(corroep);
-            Metodos.tipoEmpleado=o.getTypeUser(corroep);
+            //System.out.println("Flagfrom login"+Metodos.correoEmpleado);
+            
 
         }
 

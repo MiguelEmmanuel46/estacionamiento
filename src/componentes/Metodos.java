@@ -51,8 +51,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Iterator;
 import javax.print.PrintException;
 import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;
@@ -89,18 +91,24 @@ public class Metodos
     Conexion o = new Conexion();
     public int datoSeleccionado;
     DefaultTableModel modelo;
+  
+    public static String correoEmpleado;
+   
     public static String fileNameToBase;
     public static String consultaFiltrarToExcel;
-    public static String correoEmpleado="";
+    
     public static String nombreEmpleado="";
     public static String tipoEmpleado="";
-    
-        public boolean login() throws SQLException {
+
+
+  
+        public boolean login(String correousuario,char[] passwordusuario) throws SQLException {
         boolean matched2 = false;
         String correoBD = null, passwordBD = null;
-        char[] arrayC = vistas.Login.passwordU.getPassword();
+        char[] arrayC = passwordusuario;
         String originalPassword = String.valueOf(arrayC);
-        String correo = vistas.Login.correoU.getText();
+        String correo = correousuario;
+        
         PreparedStatement stmt2 = null;
         ResultSet rs2 = null;
         boolean matched = false;
@@ -122,6 +130,7 @@ public class Metodos
             while (rs2.next()) {
                 correoBD = rs2.getString("correo");
                 passwordBD = rs2.getString("password");
+                
 
             }
         } catch (SQLException ex) {
@@ -139,6 +148,13 @@ public class Metodos
         //Vistas.Consulta.usuarioTS = correoBD;
         matched2 = matched;
         Conexion.cierraConexion();
+        
+        
+        /*
+        Metodos.correoEmpleado=correoU.getText();
+            Metodos.nombreEmpleado=o.getNameUser(corroep);
+            Metodos.tipoEmpleado=o.getTypeUser(corroep);
+        */
         return matched2;
     } 
 
@@ -591,7 +607,7 @@ public class Metodos
             tpd = dias * tarifaACobrarXDIA;
              //msg1 = dias+" x "+tarifaACobrarXDIA+"= "+tpd+"\n";
              msg1 = dias+"";
-             System.out.println(tarifaACobrarXDIA+" tcpd\n");
+             //System.out.println(tarifaACobrarXDIA+" tcpd\n");
         }else{tpd=0.0;}
         if (horas >= 1) {
             tph = horas * tarifaACobrar;
@@ -1409,7 +1425,7 @@ public class Metodos
 
         //SELECT SUM(monto) as monto_egresos from movimientos_caja WHERE tipo='Ingreso'
         try {
-            stmnt = Conexion.conectar().prepareStatement("select pagado from pension WHERE telefono='"+telefono+"'");
+            stmnt = Conexion.conectar().prepareStatement("select activo from pension WHERE telefono='"+telefono+"'");
             rs = stmnt.executeQuery();
             while (rs.next()) {
                 activo= rs.getInt("activo");
@@ -1795,6 +1811,7 @@ public class Metodos
             System.out.println("" + ex);
         }
         //Vistas.Filtrar.jButton2.setText(nombreArchivoCreado);
+        Conexion.cierraConexion();
       return nombreArchivoCreado;
     }
      
@@ -1847,12 +1864,12 @@ public class Metodos
          JOptionPane.showMessageDialog(null, "Error:" + ex);
          }*/
         try {
-            stmnt2 = Conexion.conectar().prepareStatement("SELECT pension.telefono,CONCAT(pension.nombre,' ',pension.apellidop,' ',pension.apellidom) as nombre_completo,pension.direccion,pension.identificacion,plan.tipo_plan,plan.precio,pension.cantidad_plan,CONCAT(pension.dia_inicio,' ',pension.hora_inicio) as di,CONCAT(pension.dia_vencimiento,' ',pension.hora_vencimiento) as df,pension.importe_pagado,pension.pagado FROM pension JOIN plan ON pension.id_plan=plan.id_plan WHERE pension.dia_inicio BETWEEN '"+fecha1+"' AND '"+fecha2+"'");
+            stmnt2 = Conexion.conectar().prepareStatement("SELECT pension.telefono,CONCAT(pension.nombre,' ',pension.apellidop,' ',pension.apellidom) as nombre_completo,pension.direccion,pension.identificacion,plan.tipo_plan,plan.precio,pension.cantidad_plan,CONCAT(pension.dia_inicio,' ',pension.hora_inicio) as di,CONCAT(pension.dia_vencimiento,' ',pension.hora_vencimiento) as df,pension.importe_pagado,pension.activo FROM pension JOIN plan ON pension.id_plan=plan.id_plan WHERE pension.dia_inicio BETWEEN '"+fecha1+"' AND '"+fecha2+"'");
             rs2 = stmnt2.executeQuery();
             while (rs2.next()) {
                 //model.addRow(new Object[]{rs.getString("tipo_plan"), rs.getInt("duracion"), rs.getDouble("precio")});
 
-                model.addRow(new Object[]{rs2.getString("pension.telefono"), rs2.getString("nombre_completo"),rs2.getString("pension.direccion"),rs2.getString("pension.identificacion"),rs2.getString("plan.tipo_plan"),rs2.getString("plan.precio"),rs2.getString("pension.cantidad_plan"),rs2.getString("di"),rs2.getString("df"),rs2.getDouble("pension.importe_pagado"),rs2.getInt("pension.pagado")});
+                model.addRow(new Object[]{rs2.getString("pension.telefono"), rs2.getString("nombre_completo"),rs2.getString("pension.direccion"),rs2.getString("pension.identificacion"),rs2.getString("plan.tipo_plan"),rs2.getString("plan.precio"),rs2.getString("pension.cantidad_plan"),rs2.getString("di"),rs2.getString("df"),rs2.getDouble("pension.importe_pagado"),rs2.getInt("pension.activo")});
                 //model.addRow(new Object[]{"e","s","t","a","e","s","u","n","a","tr","y"});
             }
         } catch (SQLException ex) {
@@ -1992,6 +2009,7 @@ public class Metodos
             System.out.println("" + ex);
         }
         //Vistas.Filtrar.jButton2.setText(nombreArchivoCreado);
+        Conexion.cierraConexion();
         return nombreArchivoCreado;
     }
 
@@ -2349,6 +2367,143 @@ public class Metodos
         imprimirTicket(result2 + usuario);
 
     }
+    
+    public HashMap<String, String> getTelephonoDB(){
+    HashMap<String, String> mapa = new HashMap<>();
+    //select ;
+        PreparedStatement stmnt = null;
+        ResultSet rs = null;
+        try {
+            stmnt = Conexion.conectar().prepareStatement("SELECT telefono,CONCAT(dia_vencimiento,' ',hora_vencimiento) as fecha_vencimiento from pension WHERE telefono !=''");
+            rs = stmnt.executeQuery();
+            while (rs.next()) {
+                mapa.put(rs.getString("telefono"),rs.getString("fecha_vencimiento"));
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error:" + ex);
+        }
 
+    Conexion.cierraConexion();
+    return mapa;
+    }
+    
+    public int selectIsRegisteredPlan(String telefono){
+        int existe=0;
+    PreparedStatement stmnt = null;
+        ResultSet rs = null;
+        try {
+            stmnt = Conexion.conectar().prepareStatement("SELECT count(*) as is_registered from pension WHERE telefono='"+telefono+"'");
+            rs = stmnt.executeQuery();
+            while (rs.next()) {
+               existe = rs.getInt("is_registered");
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error:" + ex);
+        }
+
+        Conexion.cierraConexion();
+    
+    return existe;
+    }
+
+    public void updatePlanInactivo(String clave){
+        PreparedStatement stmnt = null;
+        
+        try {
+            stmnt = Conexion.conectar().prepareStatement("UPDATE pension set activo=0 WHERE telefono='"+clave+"' ");
+            if (stmnt.executeUpdate() == 1) {
+                JOptionPane.showMessageDialog(null, "Información actualizada con exito!");
+            } else {
+                JOptionPane.showMessageDialog(null, "Hubo un error al actualizar la informacion");
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error:" + e);
+        }
+        
+    Conexion.cierraConexion();
+    }
+
+    public String[] calcularTiempoRestanteParaPlanUpdateTable(String fecha, String hora_entrada) {
+        String[] mensajes = new String[5];
+        String tiempoV = "";
+        String fechaHoy = fecha + " " + hora_entrada;
+        ArrayList mensajesTo2 = new ArrayList();
+        HashMap<String, String> fechaytelefono = new HashMap<>();
+        
+        fechaytelefono = getTelephonoDB();
+        
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+      /*  long l;
+        long day;
+        long hour;
+        long min;
+        long s;*/
+        int i=0;
+        
+      /*  for (int i = 0; i < telefonosDB.size(); i++) {
+            //System.out.println(telefonosDB.get(i)+"\n");
+            fechaVencimiento.add(selectFechaVencimientoPlan((String) telefonosDB.get(i)));
+        }*/
+        Iterator<String> it = fechaytelefono.keySet().iterator();
+        while(it.hasNext()){
+            String clave = it.next();
+            String valor = fechaytelefono.get(clave);
+            try {
+                java.util.Date now = df.parse(valor);//--Vencimiento
+                java.util.Date date = df.parse(fechaHoy);//--hoy
+                long l = now.getTime() - date.getTime();
+                long day = l / (24 * 60 * 60 * 1000);
+                long hour = (l / (60 * 60 * 1000) - day * 24);
+                long min = ((l / (60 * 1000)) - day * 24 * 60 - hour * 60);
+                long s = (l / 1000 - day * 24 * 60 * 60 - hour * 60 * 60 - min * 60);
+                // tiempoV = "Tiempo restante plan: " + day + " día " + hour + " hora " + min + " minuto ";
+                if (day <= 0 && hour <= 0 && min <= 0 && s <= 0) {
+                    //mensajesTo2.add("Plan vencido " + clave + " " + day + " dia(s), " + hour + " hora(s), " + min + " minuto(s), " + s + " segundos: " + "Fecha Vencimiento: " + valor + "HOY: " + fechaHoy);
+                    updatePlanInactivo(clave);
+                } else {
+                    // tiempoV = "Quedan: " + day + " dia(s), " + hour + " hora(s), " + min + " minuto(s), " + s + " segundos: ";
+                }
+                /*mensajes[0] = day + "";
+                mensajes[1] = hour + "";
+                mensajes[2] = min + "";
+                mensajes[3] = s + "";
+                mensajes[4] = tiempoV;*/
+            } catch (ParseException ex) {
+                Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }        
+
+        
+       
+        
+        
+        for (int j = 0; j < mensajesTo2.size(); j++) {
+            //System.out.println(mensajesTo2.get(j));
+        }
+        
+        return mensajes;
+    }
+
+    public void updatePension(String telefono, String nombre, String apellidop, String apellidom, String direccion, String identificacion, int id_plan, String dia_inicio, String hora_inicio, int cantidad_plan, boolean activo, Double importe_pagado) {
+        //UPDATE pension set nombre='', apellidop='', apellidom='', direccion='', identificacion='', id_plan=, dia_inicio='', hora_inicio='',dia_vencimiento='',hora_vencimiento='' cantidad_plan=, activo=,importe_pagado= WHERE telefono=''
+        
+        PreparedStatement stmnt = null;
+        String dia_vencimiento = calcularfechaV(id_plan, dia_inicio, cantidad_plan);
+        int activo1 = 1;
+        if (activo == true) {
+            activo1 = 1;
+        } else {
+            activo1 = 0;
+        }
+
+        try {
+            stmnt = Conexion.conectar().prepareStatement("UPDATE pension set nombre='"+nombre+"', apellidop='"+apellidop+"', apellidom='"+apellidom+"', direccion='"+direccion+"', identificacion='"+identificacion+"', id_plan="+id_plan+", dia_inicio='"+dia_inicio+"', hora_inicio='"+hora_inicio+"',dia_vencimiento='"+dia_vencimiento+"',hora_vencimiento='"+hora_inicio+"',cantidad_plan="+cantidad_plan+", activo="+activo1+",importe_pagado="+importe_pagado+" WHERE telefono='"+telefono+"'");
+            stmnt.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Cliente para plan " + nombre + " " + apellidop + " " + apellidom + "ingresado correctamente a la base de datos");
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error:" + ex);
+        }
+        Conexion.cierraConexion();    
+    }
     
 }
