@@ -623,11 +623,11 @@ Funciones f = new Funciones();
         Double importe_pagado =0.0;
         
         telefono = txtTelefono.getText();
-        nombre = txtNombre.getText();
+        nombre = txtNombre.getText().toUpperCase();
         String employeeName = Metodos.correoEmpleado;
-        apellidop=txtAp.getText();
-        apellidom = txtAm.getText();
-        direccion = txtDireccion.getText();
+        apellidop=txtAp.getText().toUpperCase();
+        apellidom = txtAm.getText().toUpperCase();
+        direccion = txtDireccion.getText().toUpperCase();
         dia_inicio = f.getFecha(txtFechaInicio);
         identificacion= nombreArchivoFromFileChooser;
         String hora_inicio = labelReloj.getText();

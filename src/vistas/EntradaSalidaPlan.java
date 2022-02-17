@@ -316,9 +316,12 @@ Metodos metodos = new Metodos();
         String fecha = todaysDate.toString();
         String horaF = labelReloj.getText();
         String telefono = txtId.getText();
+        String[] mensajes = new String[5];
+        mensajes = metodos.calcularTiempoRestanteParaPlan(telefono,fecha,horaF);
         
-         
+        metodos.generarTicketPlanSalida(Metodos.correoEmpleado,fecha,horaF,telefono,mensajes[4].toString()); 
         metodos.registrarSalidaPension(fecha,horaF,telefono);
+        
         
         
         //UPDATE movimientos_pension set hora_salida='11:59:00',tiempo='dia: 0 hora: 12 minuto 0' WHERE telefono='2225790336' AND hora_salida='00:00:00'

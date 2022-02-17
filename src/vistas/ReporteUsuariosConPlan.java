@@ -13,6 +13,10 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Date;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -49,6 +53,16 @@ Funciones f = new Funciones();
         this.setLocation(((pantalla.width - cuadro.width) / 2), (pantalla.height - cuadro.height) / 50);
         btnExportar.setEnabled(false);
         btnOpenFile.setEnabled(false);
+        try {
+            //SimpleDateFormat Formato = new SimpleDateFormat("yyyy-MM-dd");
+            LocalDate todaysDate = LocalDate.now();
+            String dateValue = todaysDate.toString(); // What ever column
+            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dateValue);
+
+            txtFecha1.setDate(date);
+            txtFecha2.setDate(date);
+        } catch (ParseException ex) {
+        }
     }
 
     /**
