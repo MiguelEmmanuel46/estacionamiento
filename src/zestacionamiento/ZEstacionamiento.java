@@ -35,9 +35,9 @@ public class ZEstacionamiento {
             c.set(Calendar.DAY_OF_YEAR, c.get(Calendar.DAY_OF_YEAR) + 1);
         }
 
-        c.set(Calendar.HOUR_OF_DAY, 10);
-        c.set(Calendar.MINUTE, 0);
-        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.HOUR_OF_DAY, 19);
+        c.set(Calendar.MINUTE, 30);
+        c.set(Calendar.SECOND, 0); 
 
         horaDespertar = c.getTime();
         //System.out.println(horaDespertar);

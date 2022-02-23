@@ -288,7 +288,7 @@ BgBorder fondo = new BgBorder();
 
         areaMensajes.setEditable(false);
         areaMensajes.setColumns(20);
-        areaMensajes.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
+        areaMensajes.setFont(new java.awt.Font("Century Gothic", 0, 36)); // NOI18N
         areaMensajes.setRows(5);
         jScrollPane1.setViewportView(areaMensajes);
 
@@ -447,9 +447,9 @@ BgBorder fondo = new BgBorder();
         if (checkisEnrollment==true) {
             
            mensajes = metodos.calculateRateToPay(horaF, placas);
-            for (int i = 0; i < mensajes.length; i++) {
-                areaMensajes.append(mensajes[i]+"\n");
-            }
+            //for (int i = 0; i < mensajes.length; i++) {
+                areaMensajes.append("Total a Pagar $"+mensajes[4]);
+            //}
             //metodos.updateMovimientos(fecha,placa,hora_salida,mensajes,dinero_generado);
            // System.out.println(mensajes[3]);
                    mensajjeToTicket = mensajes[3];

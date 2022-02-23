@@ -630,7 +630,8 @@ Funciones f = new Funciones();
         direccion = txtDireccion.getText().toUpperCase();
         dia_inicio = f.getFecha(txtFechaInicio);
         identificacion= nombreArchivoFromFileChooser;
-        String hora_inicio = labelReloj.getText();
+        //String hora_inicio = labelReloj.getText();
+        String hora_inicio = "24:00:00";
         importe_pagado = Double.parseDouble(labelPagar.getText());
         
             activo = true;

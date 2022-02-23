@@ -689,10 +689,10 @@ public class Metodos
         line5 = new Paragraph("72000 Puebla, Pue.");
         line6 = new Paragraph("");
         line7 = new Paragraph("");
-        line8 = new Paragraph("Atendio: " + employeeName);
+        line8 = new Paragraph("Atendio: " + nombreEmpleado);
         line9 = new Paragraph("——————————–——————————–——————————–——————————–");
-        line10 = new Paragraph(fecha);
-        line11 = new Paragraph(hora_entrada);
+        line10 = new Paragraph("Fecha y hora de entrada: "+fecha+" "+hora_entrada);
+        line11 = new Paragraph();
         line12 = new Paragraph(" Tarifa por hora o fraccion, sin tolerancia:" + tarifa);
         line13 = new Paragraph(" Costo por boleto perdido $100 ");
         line14 = new Paragraph("Estacionamiento Aries no se hace responsable por fallas mecanicas o electricas, así como objetos dejados en su interior que no hayan sido reportados a la administración.");
@@ -721,7 +721,7 @@ public class Metodos
             Barcode128 code = new Barcode128();
             code.setCode(placa);
             Image img = code.createImageWithBarcode(pdf.getDirectContent(), BaseColor.BLACK, BaseColor.BLACK);
-            img.scalePercent(400);
+            img.scalePercent(250);
             img.setAlignment(Element.ALIGN_CENTER);
 
             //doc.add(new Paragraph("Estacionamiento Aries")); //Nombre establecimient)o
@@ -924,15 +924,7 @@ public class Metodos
         return monto_egresos;
     }
 
-    public void reporteCaja(String fechaParam) {
-            
-            /************************************************************************************/
-           
-        
-        
-                   
-                   
-            /*************************************************************************************/
+    public String reporteCaja(String fechaParam) {
         Date fecha = new Date();
         String nombreArchivoCreado = null;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-hh-mm-ss");
@@ -1101,8 +1093,8 @@ public class Metodos
 
             sheet.setZoom(100);
 
-            FileOutputStream fileOut = new FileOutputStream("C:\\FilesExportExcel\\" + Fecha55 + "ReporteFoliosFiltrados.xlsx");
-            nombreArchivoCreado = "C:\\FilesExportExcel\\" + Fecha55 + "ReporteFoliosFiltrados.xlsx";
+            FileOutputStream fileOut = new FileOutputStream("C:\\FilesExportExcel\\" + Fecha55 + "ReporteCaja.xlsx");
+            nombreArchivoCreado = "C:\\FilesExportExcel\\" + Fecha55 + "ReporteCaja.xlsx";
             book.write(fileOut);
             fileOut.close();
             JOptionPane.showMessageDialog(null, "Exportado");
@@ -1115,6 +1107,7 @@ public class Metodos
             System.out.println("" + ex);
         }
         //Vistas.Filtrar.jButton2.setText(nombreArchivoCreado);
+     return nombreArchivoCreado;
     }
     
     public Map<Integer, String> getPlan() {
@@ -1182,8 +1175,8 @@ public class Metodos
         line4 = new Paragraph("Centro histórico de Puebla.");
         line5 = new Paragraph("72000 Puebla, Pue.");
         line6 = new Paragraph("");
-        line7 = new Paragraph("Atendio");
-        line8 = new Paragraph(employeeName);
+        line7 = new Paragraph("Atendio: "+nombreEmpleado);
+        line8 = new Paragraph();
         line9 = new Paragraph("Cliente: "+nombre_completo);
         line10 = new Paragraph("——————————–——————————–——————————–——————————–");
         line11 = new Paragraph("Dia inicio: "+dia_inicio+" "+"Hora inicio: "+hora_inicio );
@@ -1215,7 +1208,7 @@ public class Metodos
             Barcode128 code = new Barcode128();
             code.setCode(telefono);
             Image img = code.createImageWithBarcode(pdf.getDirectContent(), BaseColor.BLACK, BaseColor.BLACK);
-            img.scalePercent(400);
+            img.scalePercent(250);
             img.setAlignment(Element.ALIGN_CENTER);
 
             //doc.add(new Paragraph("Estacionamiento Aries")); //Nombre establecimient)o
@@ -2227,12 +2220,13 @@ public class Metodos
         line6 = new Paragraph("");
         line7 = new Paragraph("");
         line8 = new Paragraph("Ticket Salida");
-        line9 = new Paragraph("Atendio: "+employeeName);
+        line9 = new Paragraph("Atendio: "+nombreEmpleado);
         line10 = new Paragraph("——————————–——————————–——————————–——————————–");
         line11 = new Paragraph("Entrada: "+fechaEntrada0+" "+horaSalida0);
         line12 = new Paragraph("Salida: "+fechaHoy2+" "+hora_salida);
         line13 = new Paragraph(tiempo_transcurrido+" importe pagado: $"+din_gen);
-        line14 = new Paragraph(" Este ticket no es un comprobante fiscal ");
+        line14 = new Paragraph("Estacionamiento Aries no se hace responsable por fallas mecanicas o electricas, así como\n" +
+"objetos dejados en su interior que no hayan sido reportados a la administración.\n Este ticket no es un comprobante fiscal ");
         line15 = new Paragraph("=====================================================================");
         line1.setAlignment(Element.ALIGN_CENTER);
         line2.setAlignment(Element.ALIGN_CENTER);
@@ -2256,7 +2250,7 @@ public class Metodos
             Barcode128 code = new Barcode128();
             code.setCode(placa);
             Image img = code.createImageWithBarcode(pdf.getDirectContent(), BaseColor.BLACK, BaseColor.BLACK);
-            img.scalePercent(400);
+            img.scalePercent(250);
             img.setAlignment(Element.ALIGN_CENTER);
             doc.add(line1);
             doc.add(line2);
@@ -2302,7 +2296,7 @@ public class Metodos
         line5 = new Paragraph("72000 Puebla, Pue.");
         line6 = new Paragraph("");
         line7 = new Paragraph("");
-        line8 = new Paragraph("Atendio: " + employeeName);
+        line8 = new Paragraph("Atendio: " + nombreEmpleado);
         line9 = new Paragraph("——————————–——————————–——————————–——————————–");
         line10 = new Paragraph(fecha+" "+hora_entrada);
         line11 = new Paragraph("Ticket entrada");
@@ -2334,7 +2328,7 @@ public class Metodos
             Barcode128 code = new Barcode128();
             code.setCode(usuario);
             Image img = code.createImageWithBarcode(pdf.getDirectContent(), BaseColor.BLACK, BaseColor.BLACK);
-            img.scalePercent(400);
+            img.scalePercent(250);
             img.setAlignment(Element.ALIGN_CENTER);
 
             //doc.add(new Paragraph("Estacionamiento Aries")); //Nombre establecimient)o
@@ -2531,7 +2525,7 @@ public class Metodos
         line5 = new Paragraph("72000 Puebla, Pue.");
         line6 = new Paragraph("Ticket Salida");
         line7 = new Paragraph("");
-        line8 = new Paragraph("Atendio: " + employeeName);
+        line8 = new Paragraph("Atendio: " + nombreEmpleado);
         line9 = new Paragraph("——————————–——————————–——————————–——————————–");
         line10 = new Paragraph();
         line11 = new Paragraph("Entrada: "+ffechaSalida+" "+hhoraSalida);
@@ -2563,7 +2557,7 @@ public class Metodos
             Barcode128 code = new Barcode128();
             code.setCode(usuario);
             Image img = code.createImageWithBarcode(pdf.getDirectContent(), BaseColor.BLACK, BaseColor.BLACK);
-            img.scalePercent(400);
+            img.scalePercent(250);
             img.setAlignment(Element.ALIGN_CENTER);
 
             //doc.add(new Paragraph("Estacionamiento Aries")); //Nombre establecimient)o
